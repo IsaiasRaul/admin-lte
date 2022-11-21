@@ -33,7 +33,16 @@
                 <a href="{{ route('about') }}" class="nav-link">
                     <i class="nav-icon far fa-address-card"></i>
                     <p>
-                        {{ __('About us') }}
+                        {{ __('Acerca de la Ley 21.015') }}
+                    </p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{{ route('form') }}" class="nav-link">
+                    <i class="nav-icon fa fa-university"></i>
+                    <p>
+                        {{ __('Reporte Ley 21.015') }}
                     </p>
                 </a>
             </li>
