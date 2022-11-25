@@ -12,4 +12,9 @@ class UserController extends Controller
 
         return view('users.index', compact('users'));
     }
+
+    public function registrar()
+    {
+        return view('users.registrar');        
+    }
 }
