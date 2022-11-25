@@ -9,7 +9,7 @@
 
             <div class="input-group mb-3">
                 <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
-                       placeholder="{{ __('Name') }}" required autocomplete="name" autofocus>
+                       placeholder="{{ __('Nombre') }}" required autocomplete="name" autofocus>
                 <div class="input-group-append">
                     <div class="input-group-text">
                         <span class="fas fa-user"></span>
@@ -23,8 +23,27 @@
             </div>
 
             <div class="input-group mb-3">
+                <select id="municipalidad" class="form-control" @error('municipalidad') is-invalid @enderror name="municipalidad" required>
+                    <option value="0">Seleccione una municipalidad</option>
+                    @foreach ($munis as $key => $muni)
+                    <option value="{{ $muni->id }}">{{ $muni->nombre }}</option>
+                    @endforeach
+                </select>                       
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fa fa-university"></span>
+                    </div>
+                </div>
+                @error('municipalidad')
+                <span class="error invalid-feedback">
+                    {{ $message }}
+                </span>
+                @enderror
+            </div>            
+
+            <div class="input-group mb-3">
                 <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                       placeholder="{{ __('Email') }}" required autocomplete="email">
+                       placeholder="{{ __('Correo Electronico') }}" required autocomplete="email">
                 <div class="input-group-append">
                     <div class="input-group-text">
                         <span class="fas fa-envelope"></span>
@@ -39,7 +58,7 @@
 
             <div class="input-group mb-3">
                 <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
-                       placeholder="{{ __('Password') }}" required autocomplete="new-password">
+                       placeholder="{{ __('Contraseña') }}" required autocomplete="new-password">
                 <div class="input-group-append">
                     <div class="input-group-text">
                         <span class="fas fa-lock"></span>
@@ -55,7 +74,7 @@
             <div class="input-group mb-3">
                 <input type="password" name="password_confirmation"
                        class="form-control @error('password_confirmation') is-invalid @enderror"
-                       placeholder="{{ __('Confirm Password') }}" required autocomplete="new-password">
+                       placeholder="{{ __('Confirme Contraseña') }}" required autocomplete="new-password">
                 <div class="input-group-append">
                     <div class="input-group-text">
                         <span class="fas fa-lock"></span>

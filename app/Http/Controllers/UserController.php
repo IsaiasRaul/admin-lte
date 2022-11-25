@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Municipalidades;
 
 class UserController extends Controller
 {
@@ -15,6 +16,8 @@ class UserController extends Controller
 
     public function registrar()
     {
-        return view('users.registrar');        
+        $munis = Municipalidades::all();
+        
+        return view('users.registrar', compact('munis'));        
     }
 }
