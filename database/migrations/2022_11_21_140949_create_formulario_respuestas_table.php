@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('formulario_respuestas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_formulario');
-            $table->string('respuesta',5000);
+            $table->string('respuesta',5000)->nullable();
             $table->unsignedBigInteger('id_registro');
             $table->unsignedBigInteger('id_tipo_respuesta');
             $table->timestamps();

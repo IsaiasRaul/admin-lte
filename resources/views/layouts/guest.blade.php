@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="{{ asset('css/icheck-bootstrap.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -27,7 +29,7 @@
 </div>
 <!-- /.login-box -->
 
-<script src="{{ mix('js/app.js') }}" defer></script>
+
 <!-- Bootstrap 4 -->
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 <!-- AdminLTE App -->

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -12,6 +13,7 @@
     <link rel="stylesheet" href="{{ asset('css/fontawesome.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @yield('styles')
 </head>
 <body class="hold-transition sidebar-mini">
@@ -95,7 +97,6 @@
 
 <!-- REQUIRED SCRIPTS -->
 
-<script src="{{ mix('js/app.js') }}" defer></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('js/adminlte.min.js') }}" defer></script>
 @yield('scripts')

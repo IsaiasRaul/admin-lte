@@ -19,9 +19,9 @@ return new class extends Migration
             $table->unsignedBigInteger('id_tipo_input');
             $table->unsignedBigInteger('id_etapa_producto');
             $table->string('label',500);
-            $table->integer('name');
-            $table->integer('pattern');
-            $table->integer('requerido');
+            $table->string('name',100);
+            $table->string('pattern',100);
+            $table->string('requerido',100);
             $table->integer('orden');
             $table->tinyInteger('activo');
             $table->timestamps();
