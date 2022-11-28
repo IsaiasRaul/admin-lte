@@ -6,6 +6,8 @@ use App\Models\Convocatorias;
 use App\Models\Etapaproductos;
 use Illuminate\Http\Request;
 use App\Models\FormularioRespuestas;
+use App\Models\Municipalidades;
+use App\Models\RegistroFormularios;
 
 class FormulariosController extends Controller
 {
@@ -16,22 +18,35 @@ class FormulariosController extends Controller
      */
     public function index()
     {
+        /**Obtener id municipalidad del usuario ROL */
+        $idmunicipalidad = 1; 
+        $municialidad = Municipalidades::where('id',$idmunicipalidad)->get();
+        $registrosForm = RegistroFormularios::where('id_municipalidad',$idmunicipalidad)
+                                           ->where('activo',1)
+                                           ->with('municipalidad')
+                                           ->with('convocatorias')
+                                           ->with('estados')
+                                           ->paginate();
         
-
-        //return view('municipio.form', ['forms' => $forms, 'etapasFormulario'=>$etapas] );
+                                           //dd($registrosForm);
+        return view('municipio.registrosform', ['registrosForm' => $registrosForm, 'munidata'=>$municialidad] );
     }
 
-    public function formularios()
+    public function formulario_respuesta(Request $request)
     {
+        /**Obtener id municipalidad del usuario ROL */
+        $idmunicipalidad = 1;
+        $municialidad = Municipalidades::where('id',$idmunicipalidad)->get();
         $etapas = Etapaproductos::where('id_producto', env('ID_PROGRAMA') )
         ->orderBy('orden')
         ->get();
 
-        $forms = FormularioRespuestas::paginate();
+        $forms = FormularioRespuestas::where('id_registro',$request->idregistro)
+                                    ->with('formularios')    
+                                    ->get();
 
-        dd($forms);
 
-        return view('municipio.form', ['forms' => $forms, 'etapasFormulario'=>$etapas] );
+        return view('municipio.form', ['forms' => $forms, 'etapasFormulario'=>$etapas, 'munidata'=>$municialidad] );
     }
      
  

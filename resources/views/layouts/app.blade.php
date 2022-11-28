@@ -7,14 +7,21 @@
 
     
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('css/fontawesome.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <!-- jquery 3.6.0 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    
+    <!-- pluggin jquery steps (wizard) -->
+    <script src="{{ asset('js/jquery.steps-1.1.0/jquery.steps.min.js') }}" defer></script>
+    <script src="{{ asset('js/wizard.js') }}" defer></script>
+    <link href="{{ asset('css/jquery.steps.css') }}" rel="stylesheet">
     
     @yield('styles')
 </head>
@@ -34,14 +41,14 @@
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                    <img src="https://assets.infyom.com/logo/blue_logo_150x150.png"
+                    <img src="{{ asset('images/logo_senadis.gif') }}"
                          class="user-image img-circle elevation-2" alt="User Image">
                     <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                     <!-- User image -->
                     <li class="user-header bg-primary">
-                        <img src="https://assets.infyom.com/logo/blue_logo_150x150.png"
+                        <img src="{{ asset('images/logo_senadis.gif') }}"
                              class="img-circle elevation-2"
                              alt="User Image">
                         <p>
@@ -51,7 +58,7 @@
                     </li>
                     <!-- Menu Footer-->
                     <li class="user-footer">
-                        <a href="{{ route('profile.show') }}" class="btn btn-default btn-flat">Profile</a>
+                        <a href="{{ route('profile.show') }}" class="btn btn-default btn-flat">Mi Perfil</a>
                         <a href="#" class="btn btn-default btn-flat float-right"
                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             Cerrar Sesion
@@ -108,6 +115,30 @@
 <!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
+<!-- Accesibilidad userway -->
+<script>
+      (function(d){
+         var s = d.createElement("script");
+         /* uncomment the following line to override default position*/
+         /* s.setAttribute("data-position", 1);*/
+         /* uncomment the following line to override default size (values: small, large)*/
+         /* s.setAttribute("data-size", "large");*/
+         /* uncomment the following line to override default language (e.g., fr, de, es, he, nl, etc.)*/
+          s.setAttribute("data-language", "es");
+         /* uncomment the following line to override color set via widget (e.g., #053f67)*/
+         /* s.setAttribute("data-color", "#2d68ff");*/
+         /* uncomment the following line to override type set via widget (1=person, 2=chair, 3=eye, 4=text)*/
+         /* s.setAttribute("data-type", "1");*/
+         /* s.setAttribute("data-statement_text:", "Our Accessibility Statement");*/
+         /* s.setAttribute("data-statement_url", "http://www.example.com/accessibility";*/
+         /* uncomment the following line to override support on mobile devices*/
+         s.setAttribute("data-mobile", true);
+         /* uncomment the following line to set custom trigger action for accessibility menu*/
+         /* s.setAttribute("data-trigger", "triggerId")*/
+         s.setAttribute("data-account", "Q8t1BcxLBc");
+         s.setAttribute("src", "https://cdn.userway.org/widget.js");
+         (d.body || d.head).appendChild(s);})(document)
+ </script>
 
 <!-- AdminLTE App -->
 <script src="{{ asset('js/adminlte.min.js') }}" defer></script>

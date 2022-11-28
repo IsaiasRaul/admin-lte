@@ -31,5 +31,6 @@ Route::middleware('auth')->group(function () {
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 
     Route::get('form', [\App\Http\Controllers\FormulariosController::class, 'index'])->name('form');
+    Route::get('formRespuesta/{idregistro}', [\App\Http\Controllers\FormulariosController::class, 'formulario_respuesta'])->name('form.respuesta');
 
 });
