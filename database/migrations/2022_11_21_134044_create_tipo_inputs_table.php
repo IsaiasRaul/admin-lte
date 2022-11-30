@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('tipo_inputs', function (Blueprint $table) {
             $table->id();
-            $table->string('tipo_inpus',500);
+            $table->string('tipo_inputs',200);
             $table->timestamps();
         });
     }
