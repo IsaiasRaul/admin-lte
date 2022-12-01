@@ -24,5 +24,6 @@ class TipoinpustSeeder extends Seeder
         TipoInputs::create(['tipo_inputs' => 'email']);
         TipoInputs::create(['tipo_inputs' => 'Multiselect']);
         TipoInputs::create(['tipo_inputs' => 'RUN']);
+        TipoInputs::create(['tipo_inputs' => 'Numerico']);
     }
 }

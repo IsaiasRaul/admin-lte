@@ -5,10 +5,8 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm-6">
-                    @foreach ($munidata as $muni)
-                    <h3 class="m-0">{{ $muni->nombre }} - {{ $muni->codigo }}</h3>
-                    @endforeach
+                <div class="col-sm-6">                    
+                    <h4 class="m-0"> Formulario Reporte Ley 21.015 </h4>
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -21,16 +19,21 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="alert alert-info">
-                        Ley 21015 Municipalidades
+                        Ley 21015 Municipalidades - 
+                        @foreach ($munidata as $muni)
+                        Municipalidad: {{ $muni->nombre }}
+                        @endforeach
                     </div>
                 </div>
             </div>
             <!-- /.row -->
         </div><!-- /.container-fluid -->
+
         <div>
+            <p><a href="{{ route('form') }}" >Inicio </a>-> Formulario</p>
             <div id="wizard">
                 @foreach ($etapasFormulario as $etapasForm)
-                <h2>{{ $etapasForm->title }}</h2>
+                <h6>{{ $etapasForm->title }}</h6>
                 <section>
                     <form id="enviar">
                         @foreach ($forms as $formrespuesta)
@@ -156,7 +159,19 @@
                                                         aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}" 
                                                         placeholder="{{ $formrespuesta->formularios->label }}">
                                     </div>
+                                    @endif 
+
+                                    <!-- Tipo input id 10: Numérico -->
+                                    @if($formrespuesta->formularios->id_tipo_input == 10 )
+                                    <div class="form-group"> 
+                                    <label for="text">{{ $formrespuesta->formularios->label }}</label>
+                                    <input type="number" ondrop="return false;" onpaste="return false;" class="form-control" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
+                                                        name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
+                                                        aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}" 
+                                                        placeholder="{{ $formrespuesta->formularios->label }}">
+                                    </div>
                                     @endif                                    
+
                                 </div>
                             @endif    
                         @endforeach
@@ -169,8 +184,60 @@
     </div>
     <!-- /.content -->
 
+    <!-- Modal HTML -->
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog modal-login">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">PRESENTACIÓN</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p align="justify">
+                        De acuerdo a la Ley N°21.015 y su Reglamento para el sector público, los organismos de la Administración del Estado deben reportar su cumplimiento en enero de cada año respecto a los siguientes aspectos:
+                        <br>
+                        <ul>
+                            <Blockquote style="border:none"> 
+                            <li>Selección preferente de personas con discapacidad</li>
+                            </blockquote>
+                        
+                        
+                            <Blockquote style="border:none"> 
+                            <li>A lo menos un 1% de la dotación anual deberán ser personas con discapacidad o asignatarias de una pensión de invalidez, en las instituciones que tengan 100 o más trabajadores (No se considera personal a honorarios).</li>
+                            </blockquote>
+                        </ul>
+                    </p>    
+                    <p align="justify">                    
+                        La presente consulta estará disponible del @foreach ($convocatoriaData as $convocatoria) {{ $convocatoria->fecha_inicio }} hasta el {{ $convocatoria->fecha_fin }} @endforeach , y está  dirigida sólo a las Municipalidades.
+                    </p>
+
+                    <p align="justify">   
+                        Se sugiere que esta encuesta sea respondida por las áreas de Gestión y Desarrollo de Personas o Recursos Humanos de la Municipalidad, empleando la clave de usuario única que ha sido remitida a la Municipalidad. 
+                    </p>
+                    <p align="justify">
+                        Debe entregar un único reporte por Municipalidad que considere todos los sectores de la gestión municipal, es decir, que incluya al municipio, educación y salud, SIEMPRE Y CUANDO  NO SEAN CORPORACIONES.
+                    </p>
+                    <p align="justify">
+                        Las Corporaciones Municipales, al ser organismos privados, deben entregar su reporte   en la plataforma de la Dirección del Trabajo en el siguiente portal: <a  target="blank" href="https://tramites.dirtrab.cl/registroempresa/"> https://tramites.dirtrab.cl/registroempresa/</a>
+                    </p>
+                    <p align="justify">
+                        Los Servicios Locales de Educación Pública y el resto de los organismos de la Administración del Estado deben entregar su reporte a través de la plataforma del Servicio Civil <a  target="blank" href="https://reportabilidadgp.serviciocivil.cl">https://reportabilidadgp.serviciocivil.cl</a>
+                    </p>
+                    <p align="justify">
+                        Ante cualquier duda, dirigirse al correo electrónico <a href="mailto:consultaleyinclusion@senadis.cl">consultaleyinclusion@senadis.cl</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
-@section('js')
+@section('scripts')
     <script> console.log('Hi!'); </script> 
+    <script>
+    $( document ).ready(function() {
+        $('#myModal').modal('toggle')
+    });    
+    </script>
 @stop

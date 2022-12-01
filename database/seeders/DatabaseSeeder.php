@@ -3,8 +3,6 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-
-use App\Models\Productos;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -25,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TipoRespuestaSeeder::class);
         $this->call(EtapaproductoSeeder::class);
         $this->call(ConvocatoriaSeeder::class);
+        $this->call(FormularioSeeder::class);
 
         
         // \App\Models\User::factory(10)->create();

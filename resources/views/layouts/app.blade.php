@@ -22,7 +22,7 @@
     <script src="{{ asset('js/jquery.steps-1.1.0/jquery.steps.min.js') }}" defer></script>
     <script src="{{ asset('js/wizard.js') }}" defer></script>
     <link href="{{ asset('css/jquery.steps.css') }}" rel="stylesheet">
-    
+
     @yield('styles')
 </head>
 <body class="hold-transition sidebar-mini">
@@ -143,6 +143,30 @@
 
 <!-- AdminLTE App -->
 <script src="{{ asset('js/adminlte.min.js') }}" defer></script>
+
+<script>
+
+
+$(function () {
+    var url = window.location;
+    
+    // for single sidebar menu
+    $('ul.nav-sidebar a').filter(function () {
+        return this.href == url;
+    }).addClass('active');
+
+    // for sidebar menu and treeview
+    $('ul.nav-treeview a').filter(function () {
+        return this.href == url;
+    }).parentsUntil(".nav-sidebar > .nav-treeview")
+        .css({'display': 'block'})
+        .addClass('menu-open').prev('a')
+        .addClass('active');
+});
+
+</script>
+
 @yield('scripts')
+
 </body>
 </html>

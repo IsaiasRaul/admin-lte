@@ -1,7 +1,7 @@
 $(function ()
 {  
     $("#wizard").steps({
-        headerTag: "h2",
+        headerTag: "h6",
         bodyTag: "section",
         transitionEffect: "slideLeft",
         transitionEffectSpeed: 200,

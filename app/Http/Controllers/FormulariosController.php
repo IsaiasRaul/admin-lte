@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\FormularioRespuestas;
 use App\Models\Municipalidades;
 use App\Models\RegistroFormularios;
+use PhpParser\Node\Expr\AssignOp\Concat;
 
 class FormulariosController extends Controller
 {
@@ -36,8 +37,9 @@ class FormulariosController extends Controller
     {
         /**Obtener id municipalidad del usuario ROL */
         $idmunicipalidad = 1;
-        $municialidad = Municipalidades::where('id',$idmunicipalidad)->get();
-        $etapas = Etapaproductos::where('id_producto', env('ID_PROGRAMA') )
+        $munidata = Municipalidades::where('id',$idmunicipalidad)->get();
+        $convocatoriaData = Convocatorias::where('id',$request->idconvocatoria)->get();
+        $etapasFormulario = Etapaproductos::where('id_producto', env('ID_PROGRAMA') )
         ->orderBy('orden')
         ->get();
 
@@ -46,7 +48,7 @@ class FormulariosController extends Controller
                                     ->get();
 
 
-        return view('municipio.form', ['forms' => $forms, 'etapasFormulario'=>$etapas, 'munidata'=>$municialidad] );
+        return view('municipio.form', compact(['forms','etapasFormulario','munidata','convocatoriaData']) );
     }
      
  

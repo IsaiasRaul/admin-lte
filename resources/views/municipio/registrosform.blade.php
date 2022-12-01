@@ -6,9 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    @foreach ($munidata as $muni)
-                    <h3 class="m-0">{{ $muni->nombre }} - {{ $muni->codigo }}</h3>
-                    @endforeach
+                    Formulario Reporte Ley 21.015
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -21,7 +19,10 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="alert alert-info">
-                        Ley 21015 Municipalidades
+                        Ley 21015 Municipalidades -
+                        @foreach ($munidata as $muni)
+                        <h3 class="m-0">{{ $muni->nombre }}</h3>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -44,7 +45,7 @@
                         <td>{{ $registroForm->convocatorias->nombre }}</td>
                         <td>
                             @csrf
-                            <a href="{{ route('form.respuesta',$registroForm->id) }}" class="dropdown-item">
+                            <a href="{{ route('form.respuesta',[$registroForm->id,$registroForm->id_convocatoria]) }}" class="dropdown-item">
                                 <i class="mr-2 fas fa-sign-out-alt"></i>
                                 {{ __('Responder Formulario') }}
                             </a>
