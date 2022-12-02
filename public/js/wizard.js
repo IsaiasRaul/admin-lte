@@ -1,9 +1,10 @@
 $(function ()
 {  
     $("#wizard").steps({
-        headerTag: "h6",
+        headerTag: "h2",
         bodyTag: "section",
         transitionEffect: "slideLeft",
+        stepsOrientation: "vertical",
         transitionEffectSpeed: 200,
 
         onStepChanging: function (event, currStepIndex, nextStepIndex) {

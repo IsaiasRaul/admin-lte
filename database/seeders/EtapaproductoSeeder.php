@@ -15,10 +15,10 @@ class EtapaproductoSeeder extends Seeder
      */
     public function run()
     {
-        Etapaproductos::create(['title' => 'SELECCIÓN PREFERENTE', 'id_producto'=>1, 'icon_class'=>'fa fa users', 'orden'=>1, 'activo'=>1]);
-        Etapaproductos::create(['title' => 'MANTENCIÓN Y CONTRATACIÓN DE PERSONAS CON DISCAPACIDAD', 'id_producto'=>1, 'icon_class'=>'fa fa users', 'orden'=>1, 'activo'=>1]);
-        Etapaproductos::create(['title' => 'DETALLE DE LAS PERSONAS CON DISCAPACIDAD', 'id_producto'=>1, 'icon_class'=>'fa fa users', 'orden'=>1, 'activo'=>1]);
-        Etapaproductos::create(['title' => 'DIFUSIÓN INFORME PREVIO', 'id_producto'=>1, 'icon_class'=>'fa fa users', 'orden'=>1, 'activo'=>1]);
-        Etapaproductos::create(['title' => 'TÉRMINO Y ENVÍO DE FORMULARIO', 'id_producto'=>1, 'icon_class'=>'fa fa users', 'orden'=>1, 'activo'=>1]);
+        Etapaproductos::create(['title' => 'Selección Preferente', 'id_producto'=>1, 'icon_class'=>'fa fa users', 'orden'=>1, 'activo'=>1]);
+        Etapaproductos::create(['title' => 'Mantención Y Contratación De Personas Con Discapacidad', 'id_producto'=>1, 'icon_class'=>'fa fa users', 'orden'=>1, 'activo'=>1]);
+        Etapaproductos::create(['title' => 'Detalle De Las Personas Con Discapacidad', 'id_producto'=>1, 'icon_class'=>'fa fa users', 'orden'=>1, 'activo'=>1]);
+        Etapaproductos::create(['title' => 'Difusión Informe Previo', 'id_producto'=>1, 'icon_class'=>'fa fa users', 'orden'=>1, 'activo'=>1]);
+        Etapaproductos::create(['title' => 'Término Y Envío De Formulario', 'id_producto'=>1, 'icon_class'=>'fa fa users', 'orden'=>1, 'activo'=>1]);
     }
 }

@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Convocatorias;
 use App\Models\Etapaproductos;
+use App\Models\FormularioOption;
 use Illuminate\Http\Request;
 use App\Models\FormularioRespuestas;
+use App\Models\Formularios;
 use App\Models\Municipalidades;
 use App\Models\RegistroFormularios;
 use PhpParser\Node\Expr\AssignOp\Concat;
@@ -44,12 +46,24 @@ class FormulariosController extends Controller
         ->get();
 
         $forms = FormularioRespuestas::where('id_registro',$request->idregistro)
-                                    ->with('formularios')    
+                                    ->with('formularios')
                                     ->get();
+       
+        $opcionesForm = FormularioOption::with('formulariosOption')->get();
+   
 
+        // dd($opcionesForm);
+       // dd($forms);
+       // dd($etapasFormulario);
+       // dd($munidata);
+       // dd($convocatoriaData);
 
-        return view('municipio.form', compact(['forms','etapasFormulario','munidata','convocatoriaData']) );
+        return view('municipio.form', compact(['forms','etapasFormulario','munidata','convocatoriaData','opcionesForm']) );
     }
-     
+
+    public function save()
+    {
+
+    }
  
 }

@@ -18,10 +18,9 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="alert alert-info">
-                        Ley 21015 Municipalidades - 
+                    <div class="alert alert-info">                         
                         @foreach ($munidata as $muni)
-                        Municipalidad: {{ $muni->nombre }}
+                        Municipalidad: Ley 21015 Municipalidades - {{ $muni->nombre }}
                         @endforeach
                     </div>
                 </div>
@@ -33,7 +32,7 @@
             <p><a href="{{ route('form') }}" >Inicio </a>-> Formulario</p>
             <div id="wizard">
                 @foreach ($etapasFormulario as $etapasForm)
-                <h6>{{ $etapasForm->title }}</h6>
+                <h2>{{ $etapasForm->title }}</h2>
                 <section>
                     <form id="enviar">
                         @foreach ($forms as $formrespuesta)
@@ -65,11 +64,17 @@
                                     @if($formrespuesta->formularios->id_tipo_input == 3 )
                                     <div class="form-group"> 
                                         <label for="singleselect">{{ $formrespuesta->formularios->label }}</label>
-                                        <select class="form-select" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
-                                            name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
-                                            aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}">
-                                            <option>Option 1</option>
-                                            <option>Option 2</option>
+                                        <select class="form-select" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}">
+                                            @if($opcionesForm->isEmpty())
+                                            <option value="0">Problemas al cargar opciones, contáctese con el administrador</option> 
+                                            @else
+                                            <option value="0">Seleccione</option>  
+                                                @foreach ($opcionesForm as $option)                                              
+                                                    @if ($option->id_formulario == $formrespuesta->formularios->id )
+                                                    <option value="{{ $option->opciones }}"> {{ $option->opciones }} </option>
+                                                    @endif
+                                                @endforeach
+                                            @endif    
                                         </select>
                                     </div>
                                     @endif
@@ -77,7 +82,7 @@
                                     <!-- Por desarrollar: Obtener opciones de una tabla anexa. -->
                                     @if($formrespuesta->formularios->id_tipo_input == 4 )
                                     <fieldset class="form-group">
-                                        <legend>{{ $formrespuesta->formularios->label }}</legend>
+                                        <label>{{ $formrespuesta->formularios->label }}</label>
                                         <div class="form-check">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
