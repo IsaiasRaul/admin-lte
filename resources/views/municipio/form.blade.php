@@ -33,11 +33,7 @@
             <div id="wizard">
                 @foreach ($etapasFormulario as $etapasForm)
                 <h2>{{ $etapasForm->title }}</h2>
-<<<<<<< HEAD
                 <section style="width: 100%; height: 100%; overflow-y: scroll;">
-=======
-                <section>
->>>>>>> 5483fb61c94e1c64a986a40527a4d1608f98a0d4
                     <form id="enviar">
                         @foreach ($forms as $formrespuesta)
                             @if( $etapasForm->id == $formrespuesta->formularios->id_etapa_producto)
