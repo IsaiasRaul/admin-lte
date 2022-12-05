@@ -144,6 +144,8 @@
 <!-- AdminLTE App -->
 <script src="{{ asset('js/adminlte.min.js') }}" defer></script>
 
+<!-- kit font awensome -->
+<script src="https://kit.fontawesome.com/d5b8caf2fc.js" crossorigin="anonymous"></script>
 <script>
 
 

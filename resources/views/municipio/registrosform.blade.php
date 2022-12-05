@@ -18,10 +18,9 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="alert alert-info">
-                        Ley 21015 Municipalidades -
+                    <div class="alert alert-info">                        
                         @foreach ($munidata as $muni)
-                        <h3 class="m-0">{{ $muni->nombre }}</h3>
+                        <h3 class="m-0">Municipalidad: Ley 21015 Municipalidades - {{ $muni->nombre }}</h3>
                         @endforeach
                     </div>
                 </div>
@@ -35,7 +34,7 @@
                     <tr>
                         <th>Estado</th>
                         <th>Convocatoria</th>
-                        <th>Acción</th>
+                        <th colspan="2">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,6 +49,13 @@
                                 {{ __('Responder Formulario') }}
                             </a>
                         </td>
+                        <td>
+                            @csrf
+                            <a href="#" class="dropdown-item">                                
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                {{ __('Responder Observación') }}
+                            </a>
+                        </td>                        
                     </tr>
                 @endforeach
                 </tbody>

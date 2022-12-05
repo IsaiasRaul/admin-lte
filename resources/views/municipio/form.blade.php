@@ -18,10 +18,9 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="alert alert-info">
-                        Ley 21015 Municipalidades - 
+                    <div class="alert alert-info">                         
                         @foreach ($munidata as $muni)
-                        Municipalidad: {{ $muni->nombre }}
+                        Municipalidad: Ley 21015 Municipalidades - {{ $muni->nombre }}
                         @endforeach
                     </div>
                 </div>
@@ -34,7 +33,11 @@
             <div id="wizard">
                 @foreach ($etapasFormulario as $etapasForm)
                 <h2>{{ $etapasForm->title }}</h2>
+<<<<<<< HEAD
                 <section style="width: 100%; height: 100%; overflow-y: scroll;">
+=======
+                <section>
+>>>>>>> 5483fb61c94e1c64a986a40527a4d1608f98a0d4
                     <form id="enviar">
                         @foreach ($forms as $formrespuesta)
                             @if( $etapasForm->id == $formrespuesta->formularios->id_etapa_producto)
@@ -65,11 +68,17 @@
                                     @if($formrespuesta->formularios->id_tipo_input == 3 )
                                     <div class="form-group"> 
                                         <label for="singleselect">{{ $formrespuesta->formularios->label }}</label>
-                                        <select class="form-select" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
-                                            name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
-                                            aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}">
-                                            <option>Option 1</option>
-                                            <option>Option 2</option>
+                                        <select class="form-select" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}">
+                                            @if($opcionesForm->isEmpty())
+                                            <option value="0">Problemas al cargar opciones, contáctese con el administrador</option> 
+                                            @else
+                                            <option value="0">Seleccione</option>  
+                                                @foreach ($opcionesForm as $option)                                              
+                                                    @if ($option->id_formulario == $formrespuesta->formularios->id )
+                                                    <option value="{{ $option->opciones }}"> {{ $option->opciones }} </option>
+                                                    @endif
+                                                @endforeach
+                                            @endif    
                                         </select>
                                     </div>
                                     @endif
