@@ -33,8 +33,8 @@
             <p><a href="{{ route('form') }}" >Inicio </a>-> Formulario</p>
             <div id="wizard">
                 @foreach ($etapasFormulario as $etapasForm)
-                <h6>{{ $etapasForm->title }}</h6>
-                <section>
+                <h2>{{ $etapasForm->title }}</h2>
+                <section style="width: 100%; height: 100%; overflow-y: scroll;">
                     <form id="enviar">
                         @foreach ($forms as $formrespuesta)
                             @if( $etapasForm->id == $formrespuesta->formularios->id_etapa_producto)
@@ -77,7 +77,7 @@
                                     <!-- Por desarrollar: Obtener opciones de una tabla anexa. -->
                                     @if($formrespuesta->formularios->id_tipo_input == 4 )
                                     <fieldset class="form-group">
-                                        <legend>{{ $formrespuesta->formularios->label }}</legend>
+                                        <label>{{ $formrespuesta->formularios->label }}</label>
                                         <div class="form-check">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
@@ -115,9 +115,7 @@
 
                                     <div class="form-group">
                                     <label for="fileupload">{{ $formrespuesta->formularios->label }}</label>
-                                    <input type="file" class="form-control-file" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
-                                            name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
-                                            aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}">
+                                    <input type="file" class="form-control-file" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}">
                                     <small id="fileupload" class="form-text text-muted"> Seleccione un archivo </small>
                                     </div>
                                     @endif        
@@ -199,8 +197,7 @@
                         <ul>
                             <Blockquote style="border:none"> 
                             <li>Selección preferente de personas con discapacidad</li>
-                            </blockquote>
-                        
+                            </blockquote>                        
                         
                             <Blockquote style="border:none"> 
                             <li>A lo menos un 1% de la dotación anual deberán ser personas con discapacidad o asignatarias de una pensión de invalidez, en las instituciones que tengan 100 o más trabajadores (No se considera personal a honorarios).</li>
@@ -234,7 +231,7 @@
 @endsection
 
 @section('scripts')
-    <script> console.log('Hi!'); </script> 
+    <script> //console.log('Hi!'); </script> 
     <script>
     $( document ).ready(function() {
         $('#myModal').modal('toggle')

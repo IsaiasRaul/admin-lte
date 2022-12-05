@@ -1,10 +1,12 @@
 $(function ()
 {  
     $("#wizard").steps({
-        headerTag: "h6",
+        headerTag: "h2",
         bodyTag: "section",
         transitionEffect: "slideLeft",
+        stepsOrientation: "vertical",
         transitionEffectSpeed: 200,
+        autoFocus: true,
 
         onStepChanging: function (event, currStepIndex, nextStepIndex) {
           var errorHeader = '<span class="fa fa-times-circle fa-2x" '
