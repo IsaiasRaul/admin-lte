@@ -10,7 +10,8 @@ use App\Models\FormularioRespuestas;
 use App\Models\Formularios;
 use App\Models\Municipalidades;
 use App\Models\RegistroFormularios;
-use PhpParser\Node\Expr\AssignOp\Concat;
+use App\Models\User;
+use Carbon\Carbon;
 
 class FormulariosController extends Controller
 {
@@ -21,8 +22,14 @@ class FormulariosController extends Controller
      */
     public function index()
     {
-        /**Obtener id municipalidad del usuario ROL */
-        $idmunicipalidad = 1; 
+        $idmunicipalidad = $this->obtenerMunicipalidad();
+
+        //Insertar registros
+        $registro = new RegistroFormularios;
+        $registro->id_estado = 1;
+        $registro->id_convocatoria = $this->obtenerConvocatoria();
+
+
         $municialidad = Municipalidades::where('id',$idmunicipalidad)->get();
         $registrosForm = RegistroFormularios::where('id_municipalidad',$idmunicipalidad)
                                            ->where('activo',1)
@@ -32,13 +39,19 @@ class FormulariosController extends Controller
                                            ->paginate();
         
                                            //dd($registrosForm);
+
+
+
+        //insertar Formulario
+
+
         return view('municipio.registrosform', ['registrosForm' => $registrosForm, 'munidata'=>$municialidad] );
     }
 
     public function formulario_respuesta(Request $request)
     {
         /**Obtener id municipalidad del usuario ROL */
-        $idmunicipalidad = 1;
+        $idmunicipalidad = $this->obtenerMunicipalidad();
         $munidata = Municipalidades::where('id',$idmunicipalidad)->get();
         $convocatoriaData = Convocatorias::where('id',$request->idconvocatoria)->get();
         $etapasFormulario = Etapaproductos::where('id_producto', env('ID_PROGRAMA') )
@@ -61,9 +74,30 @@ class FormulariosController extends Controller
         return view('municipio.form', compact(['forms','etapasFormulario','munidata','convocatoriaData','opcionesForm']) );
     }
 
-    public function save()
+    public function obtenerMunicipalidad()
     {
+        /**Obtener id municipalidad del usuario ROL */
+        $datosUsuario = auth()->user();
+        if (!is_null($datosUsuario->id_municipalidad)) {
+            $idmunicipalidad = $datosUsuario->id_municipalidad;
+        } else {
+            $idmunicipalidad = 0;
+        }
 
+        return $idmunicipalidad;
+    }
+
+    public function obtenerConvocatoria()
+    {
+        $fechaFormateada = Carbon::now();
+        $convocatoria = Convocatorias::where('activo', 1)
+            ->where('fecha_inicio', '>=', $fechaFormateada->toDateTimeString())
+            ->where('fecha_fin', '<=', $fechaFormateada->toDateTimeString())->get();
+        
+        dd($convocatoria);
+
+
+        return $this->$convocatoria->id;
     }
  
 }

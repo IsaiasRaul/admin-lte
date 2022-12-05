@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call(EtapaproductoSeeder::class);
         $this->call(ConvocatoriaSeeder::class);
         $this->call(FormularioSeeder::class);
+        $this->call(FormularioOptionSeeder::class);
 
         
         // \App\Models\User::factory(10)->create();

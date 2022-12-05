@@ -60,7 +60,7 @@
                                     @endif
 
                                     <!-- Tipo input id 3: Select -->
-                                    <!-- Por desarrollar: Obtener opciones de una tabla anexa. -->
+                                    <!-- desarrolla: Se obtienen opciones desde la tabla FormOptions. -->
                                     @if($formrespuesta->formularios->id_tipo_input == 3 )
                                     <div class="form-group"> 
                                         <label for="singleselect">{{ $formrespuesta->formularios->label }}</label>
@@ -79,22 +79,20 @@
                                     </div>
                                     @endif
                                     <!-- Tipo input id 4: Radio -->
-                                    <!-- Por desarrollar: Obtener opciones de una tabla anexa. -->
+                                    <!-- desarrollo: Se obtiene opciones desde la tabla FormOptions. -->
                                     @if($formrespuesta->formularios->id_tipo_input == 4 )
                                     <fieldset class="form-group">
                                         <label>{{ $formrespuesta->formularios->label }}</label>
-                                        <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                        <label class="form-check-label" for="flexRadioDefault1">
-                                            Default radio
-                                        </label>
-                                        </div>
-                                        <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                                        <label class="form-check-label" for="flexRadioDefault2">
-                                            Default checked radio
-                                        </label>
-                                        </div>
+                                        @foreach ($opcionesForm as $option)
+                                            @if ($option->id_formulario == $formrespuesta->formularios->id )                                        
+                                            <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="{{  $formrespuesta->formularios->name }}" id="{{ $formrespuesta->formularios->name }}">
+                                                <label class="form-check-label" for="flexRadioDefault1">
+                                                    {{ $option->opciones }}
+                                                </label>
+                                            </div>
+                                            @endif
+                                        @endforeach
                                     </fieldset>
                                     @endif
                                     <!-- Tipo input id 5: Check -->
@@ -141,13 +139,18 @@
                                     <div class="form-group">
                                         <label for="multipleselect">{{ $formrespuesta->formularios->label }}</label>
                                         <select multiple class="form-control" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
-                                                        name="{{ $formulario->name }}_{{ $formrespuesta->formularios->id }}" 
-                                                        aria-label="{{ $formrespuesta->formularios->aria_describedby }}">
-                                            <option>Option 1</option>
-                                            <option>Option 2</option>
-                                            <option>Option 3</option>
-                                            <option>Option 4</option>
-                                            <option>Option 5</option>
+                                                name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
+                                                aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}">
+                                            @if($opcionesForm->isEmpty())
+                                            <option value="0">Problemas al cargar opciones, contáctese con el administrador</option> 
+                                            @else
+                                            <option value="0">Seleccione</option>  
+                                                @foreach ($opcionesForm as $option)                                              
+                                                    @if ($option->id_formulario == $formrespuesta->formularios->id )
+                                                    <option value="{{ $option->opciones }}"> {{ $option->opciones }} </option>
+                                                    @endif
+                                                @endforeach
+                                            @endif    
                                         </select>
                                     </div>
                                     @endif
