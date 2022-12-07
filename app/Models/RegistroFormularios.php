@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class RegistroFormularios extends Model
 {
     use HasFactory;
-
+    
     public function municipalidad()
     {
     	return $this->belongsTo(Municipalidades::class, 'id_municipalidad');

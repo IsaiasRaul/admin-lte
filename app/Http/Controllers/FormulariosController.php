@@ -22,14 +22,45 @@ class FormulariosController extends Controller
      */
     public function index()
     {
-        $idmunicipalidad = $this->obtenerMunicipalidad();
+        $idmunicipalidad = $this->obtenerMunicipalidad();        
+        $id_estado = 1; //Creado
 
-        //Insertar registros
-        $registro = new RegistroFormularios;
-        $registro->id_estado = 1;
-        $registro->id_convocatoria = $this->obtenerConvocatoria();
+        foreach ($this->obtenerConvocatoria() as $value) {
+            $idConvocatoria = $value->id;
+        }
 
+        //Reviso si existe el registro de la municipalidad y convocatoria en la tabla registro_formularios
+        $dataRegistroForm = RegistroFormularios::where('id_convocatoria', '=', $idConvocatoria)
+                                                ->where('id_municipalidad', '=', $idmunicipalidad)->get();
 
+        //Si NO existe el registro de la municipalidad y convocatoria se inserta en la tabla registro_formularios
+        if (($dataRegistroForm->isEmpty())) {
+            // Creamos el objeto
+            $registroForm = new RegistroFormularios();
+            // Seteamos las propiedades
+            $registroForm->id_estado = $id_estado;
+            $registroForm->id_convocatoria = $idConvocatoria;
+            $registroForm->id_municipalidad = $idmunicipalidad;
+            $registroForm->activo = 1;
+            
+            // Guardamos en la base de datos 
+            $registroForm->save();
+        }
+
+        //Reviso si existe el fomulario del registro
+        foreach ($dataRegistroForm as $valor) {
+            $idRegistro = $valor->id;
+        }        
+        $registrosFormRespuesta = FormularioRespuestas::where('id_registro',$idRegistro)->get();
+        //Si NO existe el registro de la municipalidad y convocatoria se inserta en la tabla registro_formularios
+        if (($registrosFormRespuesta->isEmpty())) {
+           
+        }
+       
+
+        
+
+        //Obtenemos los datos para enviarlos a la vista
         $municialidad = Municipalidades::where('id',$idmunicipalidad)->get();
         $registrosForm = RegistroFormularios::where('id_municipalidad',$idmunicipalidad)
                                            ->where('activo',1)
@@ -89,15 +120,13 @@ class FormulariosController extends Controller
 
     public function obtenerConvocatoria()
     {
-        $fechaFormateada = Carbon::now();
-        $convocatoria = Convocatorias::where('activo', 1)
-            ->where('fecha_inicio', '>=', $fechaFormateada->toDateTimeString())
-            ->where('fecha_fin', '<=', $fechaFormateada->toDateTimeString())->get();
-        
-        dd($convocatoria);
 
+        $convocatoria = Convocatorias::all()
+        ->where('activo', 1)
+        ->where('fecha_inicio', '<=', Carbon::now()->toDateTimeString())
+        ->where('fecha_fin', '>=', Carbon::now()->toDateTimeString());
 
-        return $this->$convocatoria->id;
+        return $convocatoria;
     }
  
 }

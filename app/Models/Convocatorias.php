@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Convocatorias extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'id',
+        'nombre',
+        'fecha_inicio',
+        'fecha_fin',
+    ];
 }
