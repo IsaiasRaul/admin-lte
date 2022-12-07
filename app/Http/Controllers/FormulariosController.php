@@ -134,13 +134,25 @@ class FormulariosController extends Controller
         return $convocatoria;
     }
  
-    public function guardar(Request $request)
+    public function store(Request $request)
     {
        /* $data = $request->validate([
             'title' => 'required|max:255',
             'description' => 'required'
         ]);*/
-        
-        dd($request);
+           
+        $forms = FormularioRespuestas::where('id_registro',$request->idregistro)
+                                    ->with('formularios')
+                                    ->get();
+                                   
+
+        //dd($request->implementacion_adpataciones_8);
+        foreach ($forms as $formulario) {
+            $nameForm = $formulario->formularios->name."_".$formulario->formularios->id;
+            $dataIngresada = $request->$nameForm;
+            
+        }
+
+        return response()->json(['success'=>'Laravel ajax example is being processed.']);
     } 
 }

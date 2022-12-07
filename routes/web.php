@@ -1,6 +1,11 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FormulariosController;
+use App\Http\Controllers\MunicipalidadesController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -24,15 +29,15 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::middleware('auth')->group(function () {
     Route::view('about', 'about')->name('about');
 
-    Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
-    Route::get('registrar', [\App\Http\Controllers\UserController::class, 'registrar'])->name('users.registrar');
+    Route::get('users', [UserController::class, 'index'])->name('users.index');
+    Route::get('registrar', [UserController::class, 'registrar'])->name('users.registrar');
 
-    Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
-    Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
 
-    Route::get('form', [\App\Http\Controllers\FormulariosController::class, 'index'])->name('form');
-    Route::get('formRespuesta/{idregistro}/{idconvocatoria}', [\App\Http\Controllers\FormulariosController::class, 'formulario_respuesta'])->name('form.respuesta');
-    Route::get('/guardar_postulacion', [\App\Http\Controllers\FormulariosController::class, 'guardar'])->name('guardarPostulacion');
+    Route::get('form', [FormulariosController::class, 'index'])->name('form');
+    Route::get('formRespuesta/{idregistro}/{idconvocatoria}', [FormulariosController::class, 'formulario_respuesta'])->name('form.respuesta');
+    Route::post('/guardar_postulacion', [FormulariosController::class, 'store'])->name('guardarPostulacion');
 
-    Route::get('municipalidades', [\App\Http\Controllers\MunicipalidadesController::class, 'index'])->name('muni.municipalidades');
+    Route::get('municipalidades', [MunicipalidadesController::class, 'index'])->name('muni.municipalidades');
 });

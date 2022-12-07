@@ -26,17 +26,13 @@ $(function ()
             url: '/guardar_postulacion',
             method: 'POST',
             data: form, // prefer use serialize method
-            dataType: 'JSON',
-            contentType: false,
-            cache: false,
-            processData: false,
             beforeSend: function() {
               //Mostrar el loading
               //$(".loader").show();
             },    
             success:function(response){
                 //$(".loader").fadeOut("slow");        
-                console.log(response);
+                console.log(response.success);
             },
             error: function(response) {
             }            

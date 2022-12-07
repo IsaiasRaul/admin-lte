@@ -182,6 +182,7 @@
                                 </div>
                             @endif    
                         @endforeach
+                        <input id="idregistro" name="idregistro" type="hidden" value="{{$formrespuesta->id_registro}}">
                     </form>
                 </section>
                 @endforeach
