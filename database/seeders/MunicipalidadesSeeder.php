@@ -360,6 +360,7 @@ class MunicipalidadesSeeder extends Seeder
         Municipalidades::create(['nombre' => 'El Monte', 'codigo'=>'13602', 'activo'=>1]);
         Municipalidades::create(['nombre' => 'Isla de Maipo', 'codigo'=>'13603', 'activo'=>1]);
         Municipalidades::create(['nombre' => 'Padre Hurtado', 'codigo'=>'13604', 'activo'=>1]);
-        Municipalidades::create(['nombre' => 'Peñaflor', 'codigo'=>'13605', 'activo'=>1]);        
+        Municipalidades::create(['nombre' => 'Peñaflor', 'codigo'=>'13605', 'activo'=>1]);
+        Municipalidades::create(['id' => 9999, 'nombre' => 'Nacional', 'codigo'=>'0', 'activo'=>1]);
     }
 }

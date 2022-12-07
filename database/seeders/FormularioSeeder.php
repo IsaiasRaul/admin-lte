@@ -36,6 +36,6 @@ class FormularioSeeder extends Seeder
         //Etapa 3 - DETALLE DE LAS PERSONAS CON DISCAPACIDAD Y/O ASIGNATARIAS DE PENSIÓN DE INVALIDEZ CON CONTRATO VIGENTE
         Formularios::create(['id_producto' => 1, 'id_tipo_input'=>10, 'id_etapa_producto'=>3, 'label'=>'¿Cuántas personas con discapacidad estuvieron contratadas al menos 1 mes durante el año 2022?', 'name'=>'personas_contratadas_al_menos_un_mes_anual', 'pattern'=>'¿Cuántas personas con discapacidad estuvieron contratadas al menos 1 mes durante el año 2022?', 'requerido'=>'required', 'orden'=>15, 'activo' =>1]);
 
-        //Etapa 4 - TÉRMINO Y ENVÍO DE FORMULARIO (texto descriptivo)
+        //Etapa 4 - Difusión Informe Previo
     }
 }

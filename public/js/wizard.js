@@ -15,52 +15,32 @@ $(function ()
           
           var validar = false;
           var form = $('#enviar').serialize();
-          // Ajustar según los pasos que tiene el sistema
-          // paso 1
-          /*if (nextStepIndex == 1){ 
-            var run_postulante = $("#run_postulante_9").val();
-            if (run_postulante.length<1) {
-              validar=true;
-            } else{
-              $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-              });
-            
-              $.ajax({
-                url: '/guardar_postulacion',
-                method: 'post',
-                data: form, // prefer use serialize method
-                beforeSend: function() {
-                  //Mostrar el loading
-                  $(".loader").show();
-                },    
-                success:function(data){
-                    $(".loader").fadeOut("slow");        
-                    //console.log(data);
 
-                    if(data === 99){
-                      alertify.alert(errorHeader,'No es posible iniciar su postulación, no cumple con estar registrado en el Registro Social De Hogares.');                  
-                      return false;              
-                    }else{
-                      if(data === true){
-                        return true;
-                      }else{
-                        alertify.alert(errorHeader,'No es posible iniciar su postulación, no cumple con los requisitos');                  
-                        return false;
-                      }
-                    }                    
-                }       
-              });
+          $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
-              
-          }*/
+          });
 
-         /* if(validar == true){
-            alertify.alert(errorHeader,'RUN No puede ser vacio.');                  
-            return false;
-          }*/
+          $.ajax({
+            url: '/guardar_postulacion',
+            method: 'POST',
+            data: form, // prefer use serialize method
+            dataType: 'JSON',
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function() {
+              //Mostrar el loading
+              //$(".loader").show();
+            },    
+            success:function(response){
+                //$(".loader").fadeOut("slow");        
+                console.log(response);
+            },
+            error: function(response) {
+            }            
+          });
 
           return true;
         },

@@ -19,7 +19,8 @@ class UserSeeder extends Seeder
             [
                 'name'      => 'Isaias Cerda Murillo',
                 'email'     => 'isaias.cerda.murillo@gmail.com',
-                'password'  => bcrypt('12345678')
+                'password'  => bcrypt('12345678'),
+                'id_municipalidad'  => 9999,
             ]
         )->assignRole('Admin');
     }

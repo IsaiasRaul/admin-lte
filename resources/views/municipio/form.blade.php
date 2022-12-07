@@ -34,7 +34,8 @@
                 @foreach ($etapasFormulario as $etapasForm)
                 <h2>{{ $etapasForm->title }}</h2>
                 <section style="width: 100%; height: 100%; overflow-y: scroll;">
-                    <form id="enviar">
+                    <form id="enviar" action="javascript:void(0)" method="post">
+                        @csrf
                         @foreach ($forms as $formrespuesta)
                             @if( $etapasForm->id == $formrespuesta->formularios->id_etapa_producto)
                                 <div class="form-group col-md-12">

@@ -38,10 +38,10 @@ class FormulariosController extends Controller
             // Creamos el objeto
             $registroForm = new RegistroFormularios();
             // Seteamos las propiedades
-            $registroForm->id_estado = $id_estado;
-            $registroForm->id_convocatoria = $idConvocatoria;
+            $registroForm->id_estado        = $id_estado;
+            $registroForm->id_convocatoria  = $idConvocatoria;
             $registroForm->id_municipalidad = $idmunicipalidad;
-            $registroForm->activo = 1;
+            $registroForm->activo           = 1;
             
             // Guardamos en la base de datos 
             $registroForm->save();
@@ -52,14 +52,27 @@ class FormulariosController extends Controller
             $idRegistro = $valor->id;
         }        
         $registrosFormRespuesta = FormularioRespuestas::where('id_registro',$idRegistro)->get();
-        //Si NO existe el registro de la municipalidad y convocatoria se inserta en la tabla registro_formularios
+
+        //Si NO existe el registro en formularios respuesta se inserta en la tabla formularios_respuesta
         if (($registrosFormRespuesta->isEmpty())) {
-           
+            //obtenemos formulario maestro
+            $formulario = Formularios::where('id_producto',env('ID_PROGRAMA'))->get();
+            
+            foreach($formulario as $valorForm){
+                //echo $valorForm->id." <br>";
+
+                // Creamos el objeto
+                $formRepuesta = new FormularioRespuestas();
+                // Seteamos las propiedades
+                $formRepuesta->id_formulario        = $valorForm->id;
+                $formRepuesta->id_registro          = $idRegistro;
+                $formRepuesta->id_tipo_respuesta    = 1;
+            
+                // Guardamos en la base de datos 
+                $formRepuesta->save();
+            }        
         }
        
-
-        
-
         //Obtenemos los datos para enviarlos a la vista
         $municialidad = Municipalidades::where('id',$idmunicipalidad)->get();
         $registrosForm = RegistroFormularios::where('id_municipalidad',$idmunicipalidad)
@@ -69,13 +82,6 @@ class FormulariosController extends Controller
                                            ->with('estados')
                                            ->paginate();
         
-                                           //dd($registrosForm);
-
-
-
-        //insertar Formulario
-
-
         return view('municipio.registrosform', ['registrosForm' => $registrosForm, 'munidata'=>$municialidad] );
     }
 
@@ -95,12 +101,11 @@ class FormulariosController extends Controller
        
         $opcionesForm = FormularioOption::with('formulariosOption')->get();
    
-
         // dd($opcionesForm);
-       // dd($forms);
-       // dd($etapasFormulario);
-       // dd($munidata);
-       // dd($convocatoriaData);
+        // dd($forms);
+        // dd($etapasFormulario);
+        // dd($munidata);
+        // dd($convocatoriaData);
 
         return view('municipio.form', compact(['forms','etapasFormulario','munidata','convocatoriaData','opcionesForm']) );
     }
@@ -129,4 +134,13 @@ class FormulariosController extends Controller
         return $convocatoria;
     }
  
+    public function guardar(Request $request)
+    {
+       /* $data = $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required'
+        ]);*/
+        
+        dd($request);
+    } 
 }

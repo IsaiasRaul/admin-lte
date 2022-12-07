@@ -32,8 +32,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('form', [\App\Http\Controllers\FormulariosController::class, 'index'])->name('form');
     Route::get('formRespuesta/{idregistro}/{idconvocatoria}', [\App\Http\Controllers\FormulariosController::class, 'formulario_respuesta'])->name('form.respuesta');
+    Route::get('/guardar_postulacion', [\App\Http\Controllers\FormulariosController::class, 'guardar'])->name('guardarPostulacion');
 
     Route::get('municipalidades', [\App\Http\Controllers\MunicipalidadesController::class, 'index'])->name('muni.municipalidades');
-    
-
 });
