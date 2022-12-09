@@ -98,7 +98,9 @@ class FormulariosController extends Controller
         $forms = FormularioRespuestas::where('id_registro',$request->idregistro)
                                     ->with('formularios')
                                     ->get();
-       
+
+        //dd($forms);
+
         $opcionesForm = FormularioOption::with('formulariosOption')->get();
    
         // dd($opcionesForm);

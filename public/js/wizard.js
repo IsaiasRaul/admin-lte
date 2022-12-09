@@ -43,7 +43,7 @@ $(function ()
                       closeOnClick: true,
                       delay: 5000,
                       sound: false,
-                      position: "bottom right"
+                      position: "bottom center"
                     }
                 );               
                 }

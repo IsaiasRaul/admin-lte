@@ -42,11 +42,11 @@
                                     <!-- Tipo input id 1: Text -->
                                     @if($formrespuesta->formularios->id_tipo_input == 1 )
                                         <div class="form-group"> 
-                                        <label for="text">{{ $formrespuesta->formularios->label }}</label>
-                                        <input type="text" class="form-control" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
-                                            name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
-                                            aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}" 
-                                            placeholder="{{ $formrespuesta->formularios->label }}" {{ $formrespuesta->formularios->requerido }} >
+                                            <label for="text">{{ $formrespuesta->formularios->label }}</label>
+                                            <input type="text" class="form-control" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
+                                                name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
+                                                aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}" 
+                                                placeholder="{{ $formrespuesta->formularios->label }}" required= "$formrespuesta->formularios->requerido }}" value="{{ $formrespuesta->respuesta }}">
                                         </div>
                                     @endif
                                     
@@ -54,9 +54,9 @@
                                     @if($formrespuesta->formularios->id_tipo_input == 2 )
                                     <div class="form-group"> 
                                     <label for="textarea">{{ $formrespuesta->formularios->label }}</label>
-                                    <textarea class="form-control" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
+                                        <textarea class="form-control" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
                                         name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
-                                        aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}" rows="5"></textarea>
+                                        aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}" rows="5">{{ $formrespuesta->respuesta }}</textarea>
                                     </div>
                                     @endif
 
@@ -69,25 +69,60 @@
                                             @if($opcionesForm->isEmpty())
                                             <option value="0">Problemas al cargar opciones, contáctese con el administrador</option> 
                                             @else
+                                            @php
+                                            $seleccionado = "selected";
+                                            @endphp
                                             <option value="0">Seleccione</option>  
                                                 @foreach ($opcionesForm as $option)                                              
-                                                    @if ($option->id_formulario == $formrespuesta->formularios->id )
-                                                    <option value="{{ $option->opciones }}"> {{ $option->opciones }} </option>
+                                                    @if ($option->id_formulario == $formrespuesta->formularios->id )  
+                                                        @if( !is_null($formrespuesta->respuesta) or !empty($formrespuesta->respuesta) )
+                                                        <option value="{{ $option->opciones }}" {{$seleccionado}} > {{ $option->opciones }} </option>
+                                                         @else  
+                                                        <option value="{{ $option->opciones }}"> {{ $option->opciones }} </option>
+                                                        @endif
                                                     @endif
                                                 @endforeach
                                             @endif    
                                         </select>
                                     </div>
                                     @endif
-                                    <!-- Tipo input id 4: Radio -->
                                     <!-- desarrollo: Se obtiene opciones desde la tabla FormOptions. -->
+                                    <!-- Tipo input id 4: Radio -->
                                     @if($formrespuesta->formularios->id_tipo_input == 4 )
+                                    @php
+                                    $checked = "checked";
+                                    @endphp
+                                    <fieldset class="form-group">
+                                    <label>{{ $formrespuesta->formularios->label }}</label>
+                                        @foreach ($opcionesForm as $option)
+                                        @if ($option->id_formulario == $formrespuesta->formularios->id )
+                                        @if ($option->opciones == $formrespuesta->respuesta)
+                                            @php
+                                            $checked = "checked";
+                                            @endphp
+                                        @else
+                                            @php
+                                            $checked = "";
+                                            @endphp
+                                        @endif
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" value="{{ $option->opciones }}" {{ $checked }}>
+                                            <label class="form-check-label" for="exampleRadios1">
+                                                {{ $option->opciones }}
+                                            </label>
+                                        </div>
+                                        @endif
+                                        @endforeach
+                                    </fieldset>
+                                    @endif
+                                    <!-- desarrollo: Se obtiene opciones desde la tabla FormOptions. -->
+                                    <!--@if($formrespuesta->formularios->id_tipo_input == 4 )
                                     <fieldset class="form-group">
                                         <label>{{ $formrespuesta->formularios->label }}</label>
                                         @foreach ($opcionesForm as $option)
                                             @if ($option->id_formulario == $formrespuesta->formularios->id )                                        
                                             <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}">
+                                            <input class="form-check-input" type="radio" name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" value="{{$formrespuesta->respuesta}}">
                                                 <label class="form-check-label" for="flexRadioDefault1">
                                                     {{ $option->opciones }}
                                                 </label>
@@ -95,7 +130,7 @@
                                             @endif
                                         @endforeach
                                     </fieldset>
-                                    @endif
+                                    @endif-->
                                     <!-- Tipo input id 5: Check -->
                                     <!-- Por desarrollar: Obtener opciones de una tabla anexa. -->
                                     @if($formrespuesta->formularios->id_tipo_input == 5 )
@@ -175,7 +210,7 @@
                                     <input type="number" ondrop="return false;" onpaste="return false;" class="form-control" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
                                                         name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
                                                         aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}" 
-                                                        placeholder="{{ $formrespuesta->formularios->label }}">
+                                                        placeholder="{{ $formrespuesta->formularios->label }}" value="{{ $formrespuesta->respuesta }}">
                                     </div>
                                     @endif                                    
 
