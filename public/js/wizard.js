@@ -32,9 +32,25 @@ $(function ()
             },    
             success:function(response){
                 //$(".loader").fadeOut("slow");        
-                console.log(response.success);
+                if(response.success == 'Ok'){
+                  Lobibox.notify(
+                    'success',  // Available types 'warning', 'info', 'success', 'error'
+                    {
+                      title: true,
+                      size: 'normal',
+                      icon: false,
+                      msg: 'Guardado con éxito',
+                      closeOnClick: true,
+                      delay: 5000,
+                      sound: false,
+                      position: "bottom right"
+                    }
+                );               
+                }
+                //console.log(response.success);
             },
             error: function(response) {
+              console.log("ERROR");
             }            
           });
 
@@ -46,7 +62,7 @@ $(function ()
           current: "current step:",
           pagination: "Paginación",
           finish: "Finalizar",
-          next: "Siguiente",
+          next: "Guardar y Continuar",
           previous: "Anterior",
           loading: "Cargando..."
         }        

@@ -151,8 +151,12 @@ class FormulariosController extends Controller
             $nameForm = $formulario->formularios->name."_".$formulario->formularios->id;
             $dataIngresada = $request->$nameForm;
             
+            FormularioRespuestas::where('id_registro', $request->idregistro)
+                    ->where('id_formulario', $formulario->formularios->id)
+                    ->update(['respuesta' => $dataIngresada]);
+            
         }
 
-        return response()->json(['success'=>'Laravel ajax example is being processed.']);
+        return response()->json(['success'=>'Ok']);
     } 
 }

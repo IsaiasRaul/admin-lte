@@ -30,11 +30,11 @@
 
         <div>
             <p><a href="{{ route('form') }}" >Inicio </a>-> Formulario</p>
+            <form id="enviar" action="javascript:void(0)" method="post">
             <div id="wizard">
                 @foreach ($etapasFormulario as $etapasForm)
                 <h2>{{ $etapasForm->title }}</h2>
-                <section style="width: 100%; height: 100%; overflow-y: scroll;">
-                    <form id="enviar" action="javascript:void(0)" method="post">
+                <section style="width: 100%; height: 100%; overflow-y: scroll;">                    
                         @csrf
                         @foreach ($forms as $formrespuesta)
                             @if( $etapasForm->id == $formrespuesta->formularios->id_etapa_producto)
@@ -87,7 +87,7 @@
                                         @foreach ($opcionesForm as $option)
                                             @if ($option->id_formulario == $formrespuesta->formularios->id )                                        
                                             <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="{{  $formrespuesta->formularios->name }}" id="{{ $formrespuesta->formularios->name }}">
+                                            <input class="form-check-input" type="radio" name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}">
                                                 <label class="form-check-label" for="flexRadioDefault1">
                                                     {{ $option->opciones }}
                                                 </label>
@@ -182,12 +182,11 @@
                                 </div>
                             @endif    
                         @endforeach
-                        <input id="idregistro" name="idregistro" type="hidden" value="{{$formrespuesta->id_registro}}">
-                    </form>
+                        <input id="idregistro" name="idregistro" type="hidden" value="{{$formrespuesta->id_registro}}">                    
                 </section>
                 @endforeach
-
             </div>
+            </form>
         </div>
     </div>
     <!-- /.content -->

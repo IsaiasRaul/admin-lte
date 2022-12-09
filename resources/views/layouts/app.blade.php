@@ -24,6 +24,12 @@
     <script src="{{ asset('js/wizard.js') }}" defer></script>
     <link href="{{ asset('css/jquery.steps.css') }}" rel="stylesheet">
 
+    <!--  jQuery lobibox plugin -->
+    <script src="{{ asset('/js/lobibox/js/lobibox.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ asset('js/lobibox/css/lobibox.css') }}">
+    
+    
+
     @yield('styles')
 </head>
 <body class="hold-transition sidebar-mini">
