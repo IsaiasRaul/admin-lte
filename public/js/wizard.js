@@ -45,12 +45,24 @@ $(function ()
                       sound: false,
                       position: "bottom center"
                     }
-                );               
+                  );               
                 }
                 //console.log(response.success);
             },
             error: function(response) {
-              console.log("ERROR");
+              Lobibox.notify(
+                'error',  // Available types 'warning', 'info', 'success', 'error'
+                {
+                  title: true,
+                  size: 'normal',
+                  icon: false,
+                  msg: 'Error al guardar',
+                  closeOnClick: true,
+                  delay: 5000,
+                  sound: false,
+                  position: "bottom center"
+                }
+              );               
             }            
           });
 
