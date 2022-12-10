@@ -45,6 +45,13 @@ class FormulariosController extends Controller
             
             // Guardamos en la base de datos 
             $registroForm->save();
+            
+            /*  Obtenemos el ID ingresado, 
+                ya que va vacio la primera vez desde
+                la variable anterior ($dataRegistroForm)
+            */
+            $dataRegistroForm = RegistroFormularios::where('id_convocatoria', '=', $idConvocatoria)
+                                                    ->where('id_municipalidad', '=', $idmunicipalidad)->get();
         }
 
         //Reviso si existe el fomulario del registro

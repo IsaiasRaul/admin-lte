@@ -179,8 +179,7 @@
                                                 aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}">
                                             @if($opcionesForm->isEmpty())
                                             <option value="0">Problemas al cargar opciones, contáctese con el administrador</option> 
-                                            @else
-                                            <option value="0">Seleccione</option>  
+                                            @else                                
                                                 @foreach ($opcionesForm as $option)                                              
                                                     @if ($option->id_formulario == $formrespuesta->formularios->id )
                                                     <option value="{{ $option->opciones }}"> {{ $option->opciones }} </option>

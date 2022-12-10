@@ -18,8 +18,8 @@ class FormularioSeeder extends Seeder
         //Etapa 1 - IDENTIFICACIÓN DEL INFORMANTE
         Formularios::create(['id_producto' => 1, 'id_tipo_input'=>1, 'id_etapa_producto'=>1, 'label'=>'Nombre de quien responde', 'name'=>'nombre_quien_responde', 'pattern'=>'Nombre de quien responde', 'requerido'=>'required', 'orden'=>1, 'activo' =>1]);
         Formularios::create(['id_producto' => 1, 'id_tipo_input'=>1, 'id_etapa_producto'=>1, 'label'=>'Cargo', 'name'=>'cargo', 'pattern'=>'Cargo', 'requerido'=>'required', 'orden'=>2, 'activo' =>1]);
-        Formularios::create(['id_producto' => 1, 'id_tipo_input'=>1, 'id_etapa_producto'=>1, 'label'=>'Correo electrónico institucional', 'name'=>'correo_electronico_institucional', 'pattern'=>'Correo electrónico institucional', 'requerido'=>'required', 'orden'=>3, 'activo' =>1]);
-        Formularios::create(['id_producto' => 1, 'id_tipo_input'=>10, 'id_etapa_producto'=>1, 'label'=>'Teléfono de contacto', 'name'=>'telefono_contacto', 'pattern'=>'Teléfono de contacto', 'requerido'=>'required', 'orden'=>4, 'activo' =>1]);
+        Formularios::create(['id_producto' => 1, 'id_tipo_input'=>7, 'id_etapa_producto'=>1, 'label'=>'Correo electrónico institucional', 'name'=>'correo_electronico_institucional', 'pattern'=>'Correo electrónico institucional', 'requerido'=>'required', 'orden'=>3, 'activo' =>1]);
+        Formularios::create(['id_producto' => 1, 'id_tipo_input'=>10,'id_etapa_producto'=>1,'label'=>'Teléfono de contacto', 'name'=>'telefono_contacto', 'pattern'=>'Teléfono de contacto', 'requerido'=>'required', 'orden'=>4, 'activo' =>1]);
         
         //Etapa 2 - SELECCIÓN PREFERENTE
         Formularios::create(['id_producto' => 1, 
