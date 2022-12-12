@@ -29,6 +29,13 @@
                             <p>{{ __('Usuario Nuevo') }}</p>
                         </a>
                     </li>
+                    <!-- LISTADO DE USUARIOS -->
+                    <li class="nav-item">
+                        <a href="{{ route('users.show') }}" class="nav-link">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>{{ __('Usuarios') }}</p>
+                        </a>
+                    </li>
 
                     <!-- Municipalidades -->
                     <li class="nav-item">

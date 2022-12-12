@@ -67,7 +67,7 @@ $(function () {
                   //console.log(response.success);
               },
               error: function(response) {
-
+                if( response.status === 422 ) {
                   res = false;
                   validar.push(res);                
                   var errors = response.responseJSON.errors;
@@ -80,7 +80,7 @@ $(function () {
                   errorsHtml += '</ul></div';
 
                   $('.messages').html(errorsHtml);
-
+                }
               }            
             });
            

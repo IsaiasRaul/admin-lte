@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('registrar', [UserController::class, 'registrar'])->name('users.registrar');
+    Route::post('userstore', [UserController::class, 'store'])->name('users.store');
+    Route::get('userview', [UserController::class, 'show'])->name('users.show');
 
     Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');

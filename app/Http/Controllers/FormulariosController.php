@@ -12,7 +12,7 @@ use App\Models\Municipalidades;
 use App\Models\RegistroFormularios;
 use App\Models\User;
 use Carbon\Carbon;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 
 class FormulariosController extends Controller
 {
@@ -150,14 +150,16 @@ class FormulariosController extends Controller
         if ($request->ajax()) {
             $messages = [
                 'nombre_quien_responde_1.required' => 'Campo Nombre no puede ser vacio',
-                'nombre_quien_responde_1.max' => 'La edad debe estar entre :min y :max',
+                'nombre_quien_responde_1.max' => 'Campo Nombre no puede exceder los 2000 caracteres',
                 'cargo_2.required' => 'El campo cargo no puede ser vacio'
             ];
 
-            $validator = Validator::make($request->all(), [
+            $camposValidacion = [
                 'nombre_quien_responde_1' => 'required|max:255',
                 'cargo_2' => 'required'
-            ],$messages);
+            ];
+
+            $validator = Validator::make($request->all(),$camposValidacion,$messages);
 
             if ($validator->fails()) {
                 return response()->json(['success' => false, 'errors' => $validator->errors()], 422);

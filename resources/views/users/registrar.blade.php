@@ -4,9 +4,28 @@
     <div class="card-body login-card-body">
         <p class="login-box-msg">{{ __('Registrar nuevo Usuario') }}</p>
 
-        <form method="POST" action="{{ route('users.registrar') }}">
-            @csrf
+        @if(Session::has('success'))
+        <div class="alert alert-success">
+            {{ Session::get('success') }}
+            @php
+                Session::forget('success');
+            @endphp
+        </div>
+        @endif
 
+       <!-- Way 1: Display All Error Messages -->
+       @if ($errors->any())
+            <div class="alert alert-danger">
+                <strong>Ups!</strong> Existe algunos problemas al crear el usuario.<br><br>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        <form method="POST" action="{{ route('users.store') }}">
+            @csrf
             <div class="input-group mb-3">
                 <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
                        placeholder="{{ __('Nombre') }}" required autocomplete="name" autofocus>

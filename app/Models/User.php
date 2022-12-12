@@ -24,6 +24,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'id_municipalidad',
     ];
 
     /**
@@ -44,4 +45,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function municipalidades()
+    {
+    	return $this->belongsTo(Municipalidades::class, 'id_municipalidad');
+    }
 }
