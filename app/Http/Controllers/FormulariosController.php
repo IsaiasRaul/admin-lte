@@ -12,6 +12,7 @@ use App\Models\Municipalidades;
 use App\Models\RegistroFormularios;
 use App\Models\User;
 use Carbon\Carbon;
+use Validator;
 
 class FormulariosController extends Controller
 {
@@ -99,8 +100,8 @@ class FormulariosController extends Controller
         $munidata = Municipalidades::where('id',$idmunicipalidad)->get();
         $convocatoriaData = Convocatorias::where('id',$request->idconvocatoria)->get();
         $etapasFormulario = Etapaproductos::where('id_producto', env('ID_PROGRAMA') )
-        ->orderBy('orden')
-        ->get();
+                                          ->orderBy('orden')
+                                          ->get();
 
         $forms = FormularioRespuestas::where('id_registro',$request->idregistro)
                                     ->with('formularios')
@@ -145,27 +146,33 @@ class FormulariosController extends Controller
  
     public function store(Request $request)
     {
-       /* $data = $request->validate([
-            'title' => 'required|max:255',
-            'description' => 'required'
-        ]);*/
-           
-        $forms = FormularioRespuestas::where('id_registro',$request->idregistro)
-                                    ->with('formularios')
-                                    ->get();
-                                   
 
-        //dd($request->implementacion_adpataciones_8);
-        foreach ($forms as $formulario) {
-            $nameForm = $formulario->formularios->name."_".$formulario->formularios->id;
-            $dataIngresada = $request->$nameForm;
+        if ($request->ajax()) {
+            $validator = Validator::make($request->all(), [
+                'nombre_quien_responde_1' => 'required|max:255',
+                'cargo_2' => 'required'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+            } else {
+                $forms = FormularioRespuestas::where('id_registro',$request->idregistro)
+                                                ->with('formularios')
+                                                ->get();
             
-            FormularioRespuestas::where('id_registro', $request->idregistro)
-                    ->where('id_formulario', $formulario->formularios->id)
-                    ->update(['respuesta' => $dataIngresada]);
-            
+                foreach ($forms as $formulario) {
+                    $nameForm = $formulario->formularios->name."_".$formulario->formularios->id;
+                    $dataIngresada = $request->$nameForm;
+
+                    FormularioRespuestas::where('id_registro', $request->idregistro)
+                                        ->where('id_formulario', $formulario->formularios->id)
+                                        ->update(['respuesta' => $dataIngresada]);
+                }
+
+                //return response()->json(['success'=>'Ok']);
+
+                return response()->json(['success' => true, 'message' => 'success'], 200);
+            }
         }
-
-        return response()->json(['success'=>'Ok']);
     } 
 }

@@ -1,5 +1,6 @@
 $(function ()
-{  
+{ 
+    var validar = []; 
     $("#wizard").steps({
         headerTag: "h2",
         bodyTag: "section",
@@ -13,7 +14,6 @@ $(function ()
           +    'style="vertical-align:middle;color:#e10000;">'
           + '</span> Error Plataforma Ayudas Técnicas';
           
-          var validar = false;
           var form = $('#enviar').serialize();
 
           $.ajaxSetup({
@@ -26,13 +26,19 @@ $(function ()
             url: '/guardar_postulacion',
             method: 'POST',
             data: form, // prefer use serialize method
+            async: false,
             beforeSend: function() {
               //Mostrar el loading
               //$(".loader").show();
             },    
             success:function(response){
                 //$(".loader").fadeOut("slow");        
-                if(response.success == 'Ok'){
+                if(response.success === true ){
+                  var res = false;
+                  validar.push(res);
+                  
+                  $(".messages").fadeOut("slow");
+
                   Lobibox.notify(
                     'success',  // Available types 'warning', 'info', 'success', 'error'
                     {
@@ -45,28 +51,31 @@ $(function ()
                       sound: false,
                       position: "bottom center"
                     }
-                  );               
+                  );                  
                 }
+                //console.log('succes: '+validar+'\n');
                 //console.log(response.success);
             },
             error: function(response) {
-              Lobibox.notify(
-                'error',  // Available types 'warning', 'info', 'success', 'error'
-                {
-                  title: true,
-                  size: 'normal',
-                  icon: false,
-                  msg: 'Error al guardar',
-                  closeOnClick: true,
-                  delay: 5000,
-                  sound: false,
-                  position: "bottom center"
-                }
-              );               
+              var res = true;
+              validar.push(res);
+              
+              var errors = response.responseJSON.errors;
+
+              var errorsHtml = '<div class="alert alert-danger"><ul>';
+
+              $.each( errors, function( key, value ) {
+                  errorsHtml += '<li>'+ value[0] + '</li>';
+              });
+              errorsHtml += '</ul></div';
+
+              $('.messages').html(errorsHtml);
             }            
           });
-
-          return true;
+          
+          //console.log('al salir: '+validar+'\n');          
+          
+          return validar;
         },
         /* Labels */
         labels: {

@@ -28,6 +28,18 @@
             <!-- /.row -->
         </div><!-- /.container-fluid -->
 
+        <div class="messages"></div>
+        
+        {{-- @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif --}} 
+
         <div>
             <p><a href="{{ route('form') }}" >Inicio </a>-> Formulario</p>
             <form id="enviar" action="javascript:void(0)" method="post">
@@ -39,15 +51,46 @@
                         @foreach ($forms as $formrespuesta)
                             @if( $etapasForm->id == $formrespuesta->formularios->id_etapa_producto)
                                 <div class="form-group col-md-12">
+                                    <!-- Tipo input 11: solo label -->
+                                    @if($formrespuesta->formularios->id_tipo_input == 11 )
+                                    
+                                    <!-- Botón en HTML (lanza el modal en Bootstrap) -->
+                                    <a href="#ModalHelp_{{$formrespuesta->formularios->id}}" role="button" class="icon-block" data-toggle="modal">
+                                        <i class="fa-solid fa-circle-info"></i>
+                                        <span>Ayuda</span>                                        
+                                    </a>                                    
+                                    <!-- Modal / Ventana / Overlay en HTML -->
+                                    <div id="ModalHelp_{{$formrespuesta->formularios->id}}" class="modal fade">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h3>Ayuda - {{ $etapasForm->title }} </h3>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>                                                    
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p class="text" align="justify"><small>
+                                                        {{ $formrespuesta->formularios->label }}
+                                                    </small></p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>    
+
+                                    @endif
+
                                     <!-- Tipo input id 1: Text -->
                                     @if($formrespuesta->formularios->id_tipo_input == 1 )
-                                        <div class="form-group"> 
-                                            <label for="text">{{ $formrespuesta->formularios->label }}</label>
-                                            <input type="text" class="form-control" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
-                                                name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
-                                                aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}" 
-                                                placeholder="{{ $formrespuesta->formularios->label }}" required= "$formrespuesta->formularios->requerido }}" value="{{ $formrespuesta->respuesta }}">
-                                        </div>
+                                    <div class="form-group"> 
+                                        <label for="text">{{ $formrespuesta->formularios->label }}</label>
+                                        <input type="text" class="form-control" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
+                                            name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
+                                            aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}" 
+                                            placeholder="{{ $formrespuesta->formularios->label }}" required="{{$formrespuesta->formularios->requerido }}" value="{{ $formrespuesta->respuesta }}">
+                                    </div>
                                     @endif
                                     
                                     <!-- Tipo input id 2: TextArea -->
