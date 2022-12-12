@@ -148,10 +148,16 @@ class FormulariosController extends Controller
     {
 
         if ($request->ajax()) {
+            $messages = [
+                'nombre_quien_responde_1.required' => 'Campo Nombre no puede ser vacio',
+                'nombre_quien_responde_1.max' => 'La edad debe estar entre :min y :max',
+                'cargo_2.required' => 'El campo cargo no puede ser vacio'
+            ];
+
             $validator = Validator::make($request->all(), [
                 'nombre_quien_responde_1' => 'required|max:255',
                 'cargo_2' => 'required'
-            ]);
+            ],$messages);
 
             if ($validator->fails()) {
                 return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
@@ -163,7 +169,7 @@ class FormulariosController extends Controller
                 foreach ($forms as $formulario) {
                     $nameForm = $formulario->formularios->name."_".$formulario->formularios->id;
                     $dataIngresada = $request->$nameForm;
-
+                    
                     FormularioRespuestas::where('id_registro', $request->idregistro)
                                         ->where('id_formulario', $formulario->formularios->id)
                                         ->update(['respuesta' => $dataIngresada]);

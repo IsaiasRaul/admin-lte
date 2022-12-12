@@ -30,7 +30,7 @@
 
         <div class="messages"></div>
         
-        {{-- @if ($errors->any())
+       @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
                     @foreach ($errors->all() as $error)
@@ -38,7 +38,7 @@
                     @endforeach
                 </ul>
             </div>
-        @endif --}} 
+        @endif
 
         <div>
             <p><a href="{{ route('form') }}" >Inicio </a>-> Formulario</p>
@@ -174,6 +174,7 @@
                                         @endforeach
                                     </fieldset>
                                     @endif-->
+
                                     <!-- Tipo input id 5: Check -->
                                     <!-- Por desarrollar: Obtener opciones de una tabla anexa. -->
                                     @if($formrespuesta->formularios->id_tipo_input == 5 )
@@ -192,6 +193,7 @@
                                         </div>
                                     </fieldset>
                                     @endif
+
                                     <!-- Tipo input id 6: file -->
                                     @if($formrespuesta->formularios->id_tipo_input == 6 )
 
@@ -200,7 +202,8 @@
                                     <input type="file" class="form-control-file" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}">
                                     <small id="fileupload" class="form-text text-muted"> Seleccione un archivo </small>
                                     </div>
-                                    @endif        
+                                    @endif      
+                                      
                                     <!-- Tipo input id 7: email -->
                                     @if($formrespuesta->formularios->id_tipo_input == 7 )
                                     <div class="form-group">
@@ -217,8 +220,8 @@
                                     @if($formrespuesta->formularios->id_tipo_input == 8 )
                                     <div class="form-group">
                                         <label for="multipleselect">{{ $formrespuesta->formularios->label }}</label>
-                                        <select multiple class="form-control" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
-                                                name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
+                                        <select  class="form-control" multiple id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
+                                                name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}[]" 
                                                 aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}">
                                             @if($opcionesForm->isEmpty())
                                             <option value="0">Problemas al cargar opciones, contáctese con el administrador</option> 

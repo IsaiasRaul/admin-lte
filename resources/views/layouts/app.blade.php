@@ -28,7 +28,6 @@
     <script src="{{ asset('/js/lobibox/js/lobibox.js') }}" defer></script>
     <link rel="stylesheet" href="{{ asset('js/lobibox/css/lobibox.css') }}">
     
-    
 
     @yield('styles')
 </head>
