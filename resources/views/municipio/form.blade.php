@@ -29,7 +29,7 @@
         </div><!-- /.container-fluid -->
 
         <div class="messages"></div>
-        
+
        @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -52,36 +52,33 @@
                             @if( $etapasForm->id == $formrespuesta->formularios->id_etapa_producto)
                                 <div class="form-group col-md-12">
                                     <!-- Tipo input 11: solo label -->
-                                    @if($formrespuesta->formularios->id_tipo_input == 11 )
-                                    
-                                    <!-- Botón en HTML (lanza el modal en Bootstrap) -->
-                                    <a href="#ModalHelp_{{$formrespuesta->formularios->id}}" role="button" class="icon-block" data-toggle="modal">
-                                        <i class="fa-solid fa-circle-info"></i>
-                                        <span>Ayuda</span>                                        
-                                    </a>                                    
-                                    <!-- Modal / Ventana / Overlay en HTML -->
-                                    <div id="ModalHelp_{{$formrespuesta->formularios->id}}" class="modal fade">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h3>Ayuda - {{ $etapasForm->title }} </h3>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>                                                    
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p class="text" align="justify"><small>
-                                                        {{ $formrespuesta->formularios->label }}
-                                                    </small></p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>                                                    
+                                    @if($formrespuesta->formularios->id_tipo_input == 11 )                                    
+                                        <!-- Botón en HTML (lanza el modal en Bootstrap) -->
+                                        <a href="#ModalHelp_{{$formrespuesta->formularios->id}}" role="button" class="icon-block" data-toggle="modal">
+                                            <i class="fa-solid fa-circle-info"></i>
+                                            <span>Ayuda</span>                                        
+                                        </a>                                    
+                                        <!-- Modal / Ventana / Overlay en HTML -->
+                                        <div id="ModalHelp_{{$formrespuesta->formularios->id}}" class="modal fade">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h3>Ayuda - {{ $etapasForm->title }} </h3>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>                                                    
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p class="text" align="justify"><small>
+                                                            {{ $formrespuesta->formularios->label }}
+                                                        </small></p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>                                                    
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-
-                                    </div>    
-
+                                        </div>    
                                     @endif
-
+ 
                                     <!-- Tipo input id 1: Text -->
                                     @if($formrespuesta->formularios->id_tipo_input == 1 )
                                     <div class="form-group"> 
@@ -128,7 +125,108 @@
                                             @endif    
                                         </select>
                                     </div>
+
+                                        <!-- Tabla dinamica para llenar los colaboradores discapacitados (Solo para este proyecto)-->
+                                        @if ($etapasForm->id == 4)
+                                        <div id="element" style="display: none;">
+                                            <div class="container">
+                                                <div id="buscador"></div>
+                                                <div id="tabla">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                        <h4>Detalle de personas con discapacidad y/o asignatarias de pensión de invalidez</h4>
+                                                            <table class="table table-hover table-condensed table-bordered">
+                                                            <caption>
+                                                                <button class="btn btn-primary" data-toggle="modal" data-target="#modalNuevo">
+                                                                    Agregar nuevo 
+                                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                                </button>
+                                                            </caption>
+                                                                <tr>
+                                                                    <td>RUT</td>
+                                                                    <td>Período de contratación en 2022: Fecha desde</td>
+                                                                    <td>Período de contratación en 2022: Fecha hasta</td>
+                                                                    <td>Editar</td>
+                                                                    <td>Eliminar</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Modal para registros nuevos -->
+                                            <div class="modal fade" id="modalNuevo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                <div class="modal-dialog modal-sm" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">Agrega nueva persona</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <label>RUT</label>
+                                                        <input type="text" name="" id="rut" class="form-control input-sm">
+                                                        <label>ESTAMENTO</label>
+                                                        <input type="text" name="" id="estamento" class="form-control input-sm">
+                                                        <label>CALIDAD CONTRACTUAL</label>
+                                                        <input type="text" name="" id="calidad_contractual" class="form-control input-sm">
+                                                        <label>JORNADA LABORAL</label>
+                                                        <input type="text" name="" id="jornada_laboral" class="form-control input-sm">
+                                                        <label>MONTO REMUNERACIÓN IMPONIBLE</label>
+                                                        <input type="text" name="" id="remuneracion" class="form-control input-sm">
+                                                        <label>VERIFICADOR DE CUMPLIMIENTO</label>
+                                                        <input type="text" name="" id="v_cumplimiento" class="form-control input-sm">
+                                                        <label>GÉNERO</label>
+                                                        <input type="text" name="" id="genero" class="form-control input-sm">
+                                                        <label>FECHA DE INGRESO A LA INSTITUCIÓN</label>
+                                                        <input type="text" name="" id="fecha_ingreso_institucion" class="form-control input-sm">
+                                                        <label>Período de contratación en 2022: Fecha desde</label>
+                                                        <input type="text" name="" id="periodo_contratacion_desde" class="form-control input-sm">
+                                                        <label>Período de contratación en 2022: Fecha hasta</label>
+                                                        <input type="text" name="" id="periodo_contratacion_hasta" class="form-control input-sm">  
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="guardarnuevo">
+                                                    Agregar
+                                                    </button>
+                                                    
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            <!-- Modal para edicion de datos -->
+
+                                            <div class="modal fade" id="modalEdicion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                <div class="modal-dialog modal-sm" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">Actualizar datos</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                            <input type="text" hidden="" id="idpersona" name="">
+                                                        <label>Nombre</label>
+                                                        <input type="text" name="" id="nombreu" class="form-control input-sm">
+                                                        <label>Apellido</label>
+                                                        <input type="text" name="" id="apellidou" class="form-control input-sm">
+                                                        <label>Email</label>
+                                                        <input type="text" name="" id="emailu" class="form-control input-sm">
+                                                        <label>telefono</label>
+                                                        <input type="text" name="" id="telefonou" class="form-control input-sm">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                    <button type="button" class="btn btn-warning" id="actualizadatos" data-dismiss="modal">Actualizar</button>
+                                                    
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div>
+
+                                        </div>                                       
+                                        @endif 
+                                        <!-- hasta aca tabla dinamica -->
+                                        
                                     @endif
+
                                     <!-- desarrollo: Se obtiene opciones desde la tabla FormOptions. -->
                                     <!-- Tipo input id 4: Radio -->
                                     @if($formrespuesta->formularios->id_tipo_input == 4 )
@@ -158,23 +256,7 @@
                                         @endforeach
                                     </fieldset>
                                     @endif
-                                    <!-- desarrollo: Se obtiene opciones desde la tabla FormOptions. -->
-                                    <!--@if($formrespuesta->formularios->id_tipo_input == 4 )
-                                    <fieldset class="form-group">
-                                        <label>{{ $formrespuesta->formularios->label }}</label>
-                                        @foreach ($opcionesForm as $option)
-                                            @if ($option->id_formulario == $formrespuesta->formularios->id )                                        
-                                            <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" value="{{$formrespuesta->respuesta}}">
-                                                <label class="form-check-label" for="flexRadioDefault1">
-                                                    {{ $option->opciones }}
-                                                </label>
-                                            </div>
-                                            @endif
-                                        @endforeach
-                                    </fieldset>
-                                    @endif-->
-
+                                  
                                     <!-- Tipo input id 5: Check -->
                                     <!-- Por desarrollar: Obtener opciones de una tabla anexa. -->
                                     @if($formrespuesta->formularios->id_tipo_input == 5 )
@@ -210,7 +292,8 @@
                                         <label for="exampleInputEmail1" class="form-label">{{ $formrespuesta->formularios->label }}</label>
                                         <input type="email" class="form-control" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
                                                 name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
-                                                aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}">
+                                                aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}"
+                                                value="{{ $formrespuesta->respuesta }}">
                                         <div id="emailHelp" class="form-text">{{ $formrespuesta->formularios->aria_describedby }} </div>
                                     </div>
                                     @endif        
@@ -258,7 +341,6 @@
                                                         placeholder="{{ $formrespuesta->formularios->label }}" value="{{ $formrespuesta->respuesta }}">
                                     </div>
                                     @endif                                    
-
                                 </div>
                             @endif    
                         @endforeach
@@ -326,4 +408,24 @@
         $('#myModal').modal('toggle')
     });    
     </script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#guardarnuevo').click(function(){
+                alert('ACA');
+            //nombre=$('#nombre').val();
+           // apellido=$('#apellido').val();
+            // email=$('#email').val();
+            //telefono=$('#telefono').val();
+                //agregardatos(nombre,apellido,email,telefono);
+            });
+
+
+
+            $('#actualizadatos').click(function(){
+            //actualizaDatos();
+            });
+
+        });
+    </script>    
 @stop

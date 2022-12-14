@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ConvocatoriaSeeder::class);
         $this->call(FormularioSeeder::class);
         $this->call(FormularioOptionSeeder::class);
+        $this->call(ReglasFormularioSeeder::class);
+        $this->call(ReglasFormularioMensajeSeeder::class);
 
         
         // \App\Models\User::factory(10)->create();

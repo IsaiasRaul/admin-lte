@@ -16,16 +16,17 @@ $(function () {
           loading: "Cargando..."
         },     
         onStepChanging: function (event, currStepIndex, nextStepIndex) {
-          
-          //console.log(currStepIndex);
-
-            var validar = [];
-            var errorHeader = '<span class="fa fa-times-circle fa-2x" '
-            +    'style="vertical-align:middle;color:#e10000;">'
-            + '</span> Error Plataforma Ayudas Técnicas';
             
-            var form = $('#enviar').serialize();
+            //Carga de tabla para agregar colaboradores con discapacidad
+            if(nextStepIndex == 3 ) //Medidas de accesibilidad en procesos de seleccion (paso 4)
+            {              
+              //console.log(nextStepIndex);
+              $("#element").show();
+            }
 
+
+            var validar = [];            
+            var form = $('#enviar').serialize();
             $.ajaxSetup({
               headers: {
                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -52,12 +53,12 @@ $(function () {
                     Lobibox.notify(
                       'success',  // Available types 'warning', 'info', 'success', 'error'
                       {
-                        title: true,
+                        title: "Guardado",
                         size: 'normal',
                         icon: false,
                         msg: 'Guardado con éxito',
                         closeOnClick: true,
-                        delay: 5000,
+                        delay: 3000,
                         sound: false,
                         position: "bottom center"
                       }
@@ -77,7 +78,7 @@ $(function () {
                   $.each( errors, function( key, value ) {
                       errorsHtml += '<li>'+ value[0] + '</li>';
                   });
-                  errorsHtml += '</ul></div';
+                  errorsHtml += '</ul></div>';
 
                   $('.messages').html(errorsHtml);
                 }

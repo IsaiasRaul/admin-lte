@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FormulariosController;
 use App\Http\Controllers\MunicipalidadesController;
+use App\Http\Livewire\Select2;
 
 
 /*
@@ -42,4 +43,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/guardar_postulacion', [FormulariosController::class, 'store'])->name('guardarPostulacion');
 
     Route::get('municipalidades', [MunicipalidadesController::class, 'index'])->name('muni.municipalidades');
+
+    Route::get('select2', Select2::class);
 });
