@@ -171,7 +171,6 @@ $(function () {
         .addClass('menu-open').prev('a')
         .addClass('active');
 });
-
 </script>
 
 @yield('scripts')

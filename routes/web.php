@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FormulariosController;
 use App\Http\Controllers\MunicipalidadesController;
+use App\Http\Controllers\DetallePersonasDiscapacidadController;
 use App\Http\Livewire\Select2;
 
 
@@ -44,5 +45,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('municipalidades', [MunicipalidadesController::class, 'index'])->name('muni.municipalidades');
 
-    Route::get('select2', Select2::class);
+    Route::post('/guardar_persona_discapacidad', [DetallePersonasDiscapacidadController::class, 'store'])->name('guardarpersonadiscapacidad');
+    
+    //Route::get('select2', Select2::class);
 });

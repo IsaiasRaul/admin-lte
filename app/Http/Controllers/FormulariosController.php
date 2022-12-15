@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CalidadContractual;
 use App\Models\Convocatorias;
+use App\Models\Estamento;
 use App\Models\Etapaproductos;
 use App\Models\FormularioOption;
 use Illuminate\Http\Request;
 use App\Models\FormularioRespuestas;
 use App\Models\Formularios;
+use App\Models\JornadaLaboral;
 use App\Models\Municipalidades;
 use App\Models\RegistroFormularios;
 use App\Models\User;
+use App\Models\VerificadorCumplimiento;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
@@ -107,17 +111,32 @@ class FormulariosController extends Controller
                                     ->with('formularios')
                                     ->get();
 
-        //dd($forms);
-
+        //opciones asociado al formulario
         $opcionesForm = FormularioOption::with('formulariosOption')->get();
-   
+
+        //opciones para el formulario contratacion de personas
+        
+        $opcionesestamentos             = Estamento::get();
+        $opcinoescalidadContractual     = CalidadContractual::get();
+        $opcionesjornadaLaboral         = JornadaLaboral::get();
+        $opcionesverificadorCumplimiento = VerificadorCumplimiento::get();
+        
+        
         // dd($opcionesForm);
         // dd($forms);
         // dd($etapasFormulario);
         // dd($munidata);
         // dd($convocatoriaData);
 
-        return view('municipio.form', compact(['forms','etapasFormulario','munidata','convocatoriaData','opcionesForm']) );
+        return view('municipio.form', compact(['forms',
+                                                'etapasFormulario',
+                                                'munidata',
+                                                'convocatoriaData',
+                                                'opcionesForm',
+                                                'opcionesestamentos',
+                                                'opcinoescalidadContractual',
+                                                'opcionesjornadaLaboral',
+                                                'opcionesverificadorCumplimiento']) );
     }
 
     public function obtenerMunicipalidad()
@@ -151,12 +170,15 @@ class FormulariosController extends Controller
             $messages = [
                 'nombre_quien_responde_1.required' => 'Campo Nombre no puede ser vacio',
                 'nombre_quien_responde_1.max' => 'Campo Nombre no puede exceder los 2000 caracteres',
-                'cargo_2.required' => 'El campo cargo no puede ser vacio'
+                'cargo_2.required' => 'El campo cargo no puede ser vacio',
+                'correo_electronico_institucional_3.required' => 'El campo Correo electrónico institucional no puede ser vacio.',
+                'correo_electronico_institucional_3.email' => 'Correo electronico no es válido como formato.'
             ];
 
             $camposValidacion = [
                 'nombre_quien_responde_1' => 'required|max:255',
-                'cargo_2' => 'required'
+                'cargo_2' => 'required',
+                'correo_electronico_institucional_3' => 'required|email'                
             ];
 
             $validator = Validator::make($request->all(),$camposValidacion,$messages);
