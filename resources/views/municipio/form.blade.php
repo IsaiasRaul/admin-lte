@@ -360,9 +360,9 @@
                                         @endif
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" value="{{ $option->opciones }}" {{ $checked }}>
-                                            <label class="form-check-label" for="exampleRadios1">
+                                           <label class="form-check-label" for="exampleRadios1">
                                                 {{ $option->opciones }}
-                                            </label>
+                                            </label> 
                                         </div>
                                         @endif
                                         @endforeach
@@ -372,20 +372,27 @@
                                     <!-- Tipo input id 5: Check -->
                                     <!-- Por desarrollar: Obtener opciones de una tabla anexa. -->
                                     @if($formrespuesta->formularios->id_tipo_input == 5 )
-                                    <fieldset class="form-group">
-                                        <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            Default checkbox
-                                        </label>
-                                        </div>
-                                        <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                                        <label class="form-check-label" for="flexCheckChecked">
-                                            Checked checkbox
-                                        </label>
-                                        </div>
-                                    </fieldset>
+                                        <fieldset class="form-group">    
+                                        <label>{{ $formrespuesta->formularios->label }}</label>
+                                        @php
+                                        $checked_checkbox = '';     
+                                        @endphp                                    
+                                        @foreach ($opcionesForm as $option)
+                                        @if ($option->id_formulario == $formrespuesta->formularios->id )
+                                            @php
+                                            $check = explode(',',$formrespuesta->respuesta);                                            
+                                            @endphp
+                                            <div class="form-check">                                        
+                                            <input @php
+                                                if(in_array($option->id, $check)){ echo 'checked="checked"'; }
+                                            @endphp class="form-check-input" type="checkbox" name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}[]" id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}_{{$option->id}}" value="{{ $option->id }}" {{ $checked_checkbox }} >
+                                            <label class="form-check-label" for="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}_{{$option->id}}">
+                                                {{ $option->opciones }}
+                                            </label>                                        
+                                            </div>
+                                            @endif
+                                            @endforeach
+                                        </fieldset>
                                     @endif
 
                                     <!-- Tipo input id 6: file -->

@@ -193,10 +193,44 @@ class FormulariosController extends Controller
                 foreach ($forms as $formulario) {
                     $nameForm = $formulario->formularios->name."_".$formulario->formularios->id;
                     $dataIngresada = $request->$nameForm;
+
+                    if($nameForm == 'motivo_no_seleccion_11'){
+                        $specialCheckebox = $request->$nameForm;
+                        if (isset($specialCheckebox)) {
+                            $selected  = implode(',', $specialCheckebox);
+
+                            /*if (is_array($specialCheckebox)){
+                                $selected = '';
+                                $num_motivos = count($specialCheckebox);
+                                $current = 0;
+                                foreach ($specialCheckebox as $key => $value) {                                    
+                                    if ($current != $num_motivos-1){
+                                        $selected .= $value.', ';
+                                    }else{
+                                        $selected .= $value.'';
+                                    }
+                                        
+                                    $current++;
+                                }
+                            }*/
+
+
+
+                            FormularioRespuestas::where('id_registro', $request->idregistro)
+                            ->where('id_formulario', $formulario->formularios->id)
+                            ->update(['respuesta' => $selected]);
+
+                            
+                        }
+
+
+                    }else{
+                        FormularioRespuestas::where('id_registro', $request->idregistro)
+                        ->where('id_formulario', $formulario->formularios->id)
+                        ->update(['respuesta' => $dataIngresada]);
+                    }
                     
-                    FormularioRespuestas::where('id_registro', $request->idregistro)
-                                        ->where('id_formulario', $formulario->formularios->id)
-                                        ->update(['respuesta' => $dataIngresada]);
+
                 }
 
                 //return response()->json(['success'=>'Ok']);

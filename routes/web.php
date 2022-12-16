@@ -21,7 +21,8 @@ use App\Http\Livewire\Select2;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    //return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
