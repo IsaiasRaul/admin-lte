@@ -46,7 +46,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('municipalidades', [MunicipalidadesController::class, 'index'])->name('muni.municipalidades');
 
-    Route::post('/guardar_persona_discapacidad', [DetallePersonasDiscapacidadController::class, 'store'])->name('guardarpersonadiscapacidad');
-    
-    //Route::get('select2', Select2::class);
+    Route::post('/guardar_persona_discapacidad', [DetallePersonasDiscapacidadController::class, 'create'])->name('guardarpersonadiscapacidad');
+    Route::post('/obtener_persona_discapacidad', [DetallePersonasDiscapacidadController::class, 'show'])->name('obtenerpersonadiscapacidad');
+        
 });

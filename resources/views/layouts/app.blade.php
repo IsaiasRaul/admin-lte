@@ -27,6 +27,8 @@
     <!--  jQuery lobibox plugin -->
     <script src="{{ asset('/js/lobibox/js/lobibox.js') }}" defer></script>
     <link rel="stylesheet" href="{{ asset('js/lobibox/css/lobibox.css') }}">
+    <!-- JS para validación RUN chileno -->
+    <script src="{{ asset('js/jquery.rut.min.js') }}" defer></script>
     
 
     @yield('styles')

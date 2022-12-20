@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('genero',50);
             $table->date('fecha_ingreso_institucion');
             $table->date('periodo_contratacion_desde');
-            $table->date('periodo_contratacion_hasta');
+            $table->date('periodo_contratacion_hasta')->nullable();
 
             $table->foreign('id_registro')->references('id')->on('registro_formularios')->onDelete("cascade")->onUpdate("cascade");
             $table->foreign('id_estamento')->references('id')->on('estamentos')->onDelete("cascade")->onUpdate("cascade");

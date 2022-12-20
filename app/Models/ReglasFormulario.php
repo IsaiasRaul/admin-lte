@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class ReglasFormulario extends Model
 {
     use HasFactory;
+
+
 }

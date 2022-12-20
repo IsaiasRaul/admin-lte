@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CalidadContractual;
 use App\Models\Convocatorias;
+use App\Models\Detallepersonasdiscapacidad;
 use App\Models\Estamento;
 use App\Models\Etapaproductos;
 use App\Models\FormularioOption;
@@ -13,6 +14,8 @@ use App\Models\Formularios;
 use App\Models\JornadaLaboral;
 use App\Models\Municipalidades;
 use App\Models\RegistroFormularios;
+use App\Models\ReglasFormulario;
+use App\Models\ReglasFormularioMensaje;
 use App\Models\User;
 use App\Models\VerificadorCumplimiento;
 use Carbon\Carbon;
@@ -120,13 +123,8 @@ class FormulariosController extends Controller
         $opcinoescalidadContractual     = CalidadContractual::get();
         $opcionesjornadaLaboral         = JornadaLaboral::get();
         $opcionesverificadorCumplimiento = VerificadorCumplimiento::get();
-        
-        
-        // dd($opcionesForm);
-        // dd($forms);
-        // dd($etapasFormulario);
-        // dd($munidata);
-        // dd($convocatoriaData);
+
+        $detallePersonaDis = Detallepersonasdiscapacidad::where('id_registro', $request->idregistro)->paginate();
 
         return view('municipio.form', compact(['forms',
                                                 'etapasFormulario',
@@ -136,7 +134,8 @@ class FormulariosController extends Controller
                                                 'opcionesestamentos',
                                                 'opcinoescalidadContractual',
                                                 'opcionesjornadaLaboral',
-                                                'opcionesverificadorCumplimiento']) );
+                                                'opcionesverificadorCumplimiento',
+                                                'detallePersonaDis']) );
     }
 
     public function obtenerMunicipalidad()
@@ -167,7 +166,52 @@ class FormulariosController extends Controller
     {
 
         if ($request->ajax()) {
-            $messages = [
+
+            /** Obtengo las reglas del formulario desde la BD */
+            $erroresCampos = FormularioRespuestas::where('id_registro',$request->idregistro)
+                                                 ->with('formularios')
+                                                 ->with('reglas_formularios')
+                                                 ->get();
+
+            $formName_array = array();
+            $regla_array = array();
+            $messages = array();
+            $camposvalido = array();
+            foreach ($erroresCampos as $key => $value) {                                
+                if (isset($value->reglas_formularios->regla)) {
+
+                    array_push($formName_array, $value->formularios->name."_".$value->formularios->id);
+                    array_push($regla_array ,$value->reglas_formularios->regla);                    
+                                    
+                    $camposvalido = array_combine($formName_array, $regla_array);                                           
+                                      
+                }                                              
+            }
+
+
+            /**Obtengo mensajes de las reglas */
+            $campoReglaArray = array();
+            $valorReglaArray = array();
+            $mensajesReglas = ReglasFormularioMensaje::with('reglas_formularios_mensaje')->get();
+            foreach ($mensajesReglas as $key => $reglasmensaje) {                
+                $id_formulario_mensaje = $reglasmensaje->reglas_formularios_mensaje->id_formulario;
+                if (!is_null($id_formulario_mensaje)) {
+                    /* obtengo nombre del formulario para vincularlo a las reglas por campos */
+                    $formulario_maestro = Formularios::where('id', $id_formulario_mensaje)->get();
+                    foreach ($formulario_maestro as $valorForm) {
+                        $nombreFormValidate = $valorForm->name."_".$valorForm->id.".".$reglasmensaje->configuracion_mensaje;
+                        /**Vincular campo con tipo de validacion y su mensaje */
+                        array_push($campoReglaArray, $nombreFormValidate);
+                        array_push($valorReglaArray, $reglasmensaje->mensaje);
+                        $camposmensajes = array_combine($campoReglaArray, $valorReglaArray);
+                    }
+                    
+                }
+                
+            }
+          
+            /** COMENTADO: Ejemplo de validacion con Laravel Validator */
+            /*$messages = [
                 'nombre_quien_responde_1.required' => 'Campo Nombre no puede ser vacio',
                 'nombre_quien_responde_1.max' => 'Campo Nombre no puede exceder los 2000 caracteres',
                 'cargo_2.required' => 'El campo cargo no puede ser vacio',
@@ -179,9 +223,11 @@ class FormulariosController extends Controller
                 'nombre_quien_responde_1' => 'required|max:255',
                 'cargo_2' => 'required',
                 'correo_electronico_institucional_3' => 'required|email'                
-            ];
+            ];*/
 
-            $validator = Validator::make($request->all(),$camposValidacion,$messages);
+            
+
+            $validator = Validator::make($request->all(),$camposvalido,$camposmensajes);
 
             if ($validator->fails()) {
                 return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
@@ -199,27 +245,9 @@ class FormulariosController extends Controller
                         if (isset($specialCheckebox)) {
                             $selected  = implode(',', $specialCheckebox);
 
-                            /*if (is_array($specialCheckebox)){
-                                $selected = '';
-                                $num_motivos = count($specialCheckebox);
-                                $current = 0;
-                                foreach ($specialCheckebox as $key => $value) {                                    
-                                    if ($current != $num_motivos-1){
-                                        $selected .= $value.', ';
-                                    }else{
-                                        $selected .= $value.'';
-                                    }
-                                        
-                                    $current++;
-                                }
-                            }*/
-
-
-
                             FormularioRespuestas::where('id_registro', $request->idregistro)
                             ->where('id_formulario', $formulario->formularios->id)
                             ->update(['respuesta' => $selected]);
-
                             
                         }
 
