@@ -33,6 +33,7 @@ return new class extends Migration
             $table->foreign('id_jornada_laboral')->references('id')->on('jornada_laborals')->onDelete("cascade")->onUpdate("cascade");
             $table->foreign('id_verificador_cumplimiento')->references('id')->on('verificador_cumplimientos')->onDelete("cascade")->onUpdate("cascade");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

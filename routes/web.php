@@ -48,5 +48,6 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/guardar_persona_discapacidad', [DetallePersonasDiscapacidadController::class, 'create'])->name('guardarpersonadiscapacidad');
     Route::post('/obtener_persona_discapacidad', [DetallePersonasDiscapacidadController::class, 'show'])->name('obtenerpersonadiscapacidad');
+    Route::post('/delete_persona_discapacidad', [DetallePersonasDiscapacidadController::class, 'update'])->name('deletepersonadiscapacidad');
         
 });

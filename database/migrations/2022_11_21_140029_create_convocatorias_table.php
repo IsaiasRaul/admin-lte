@@ -20,6 +20,7 @@ return new class extends Migration
             $table->dateTime('fecha_fin');            
             $table->tinyInteger('activo');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

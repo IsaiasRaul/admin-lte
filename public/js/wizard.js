@@ -103,7 +103,7 @@ $(function () {
 
     
       //guardar nuevo colaborador
-      $('#guardarnuevo').click(function(){      
+      $('#guardarnuevo').click(function(){
                              
         rut=$('#rut').val();
         estamento=$('#estamento').val();
@@ -191,6 +191,11 @@ $(function () {
             }
           });
       });
+
+
+      $('a.remove').click(function(e) {
+        e.target.closest('tr').remove();
+      });
 });
 
 // Script para iniciar llamada a validacion RUN
@@ -233,7 +238,7 @@ function actualizadatostabla(idregistro){
 
       for(var i = 0; i < data.data.length; i++){
         //console.log(data.data[i].rut)
-        html += '<tr>' +
+        html += '<tr id="'+data.data[i].id+'" >' +
         '<td>' + data.data[i].rut + '</td>' +
         '<td>' + data.data[i].periodo_contratacion_desde + '</td>';
 
@@ -243,7 +248,8 @@ function actualizadatostabla(idregistro){
           html += '<td>' + data.data[i].periodo_contratacion_hasta + '</td>';
         }
         html += '<td><i class="fa-solid fa-user-pen"></i></td>' +
-        '<td><i class="fa-solid fa-trash"></i></td>' +
+        '<td><a title="Eliminar este colaborador con discapacidad" class="remove" onclick="eliminarColaboradorDiscapacidad('+data.data[i].id+')" href="#">'+
+        '<i class="fa-solid fa-trash"></i></a></td>' +
         '</tr>';        
       }
       $('#DataResult').empty('').append(html);            
@@ -264,4 +270,72 @@ function actualizadatostabla(idregistro){
       );
     }
   });
+}
+
+function eliminarColaboradorDiscapacidad(id){
+  idregistro=$('#idregistro').val();
+
+  $.ajax({
+    url: '/delete_persona_discapacidad',
+    method: 'POST',
+    async: false,
+    data: {
+          id:id,
+          idregistro:idregistro
+          }, // prefer use serialize method            
+    beforeSend: function() {
+      //Mostrar el loading
+      //$(".loader").show();
+    },    
+    success:function(response){
+        //$(".loader").fadeOut("slow");        
+        if(response.success === true ){    
+          //res = true;               
+          //validar.push(res);
+          
+          actualizadatostabla(idregistro);
+          
+          Lobibox.notify(
+            'info',  // Available types 'warning', 'info', 'success', 'error'
+            {
+              title: "Eliminado",
+              size: 'normal',
+              icon: false,
+              msg: 'Persona guardada con éxito',
+              closeOnClick: true,
+              delay: 3000,
+              sound: false,
+              position: "bottom center"
+            }
+          );
+
+
+        }                         
+        //console.log('succes: '+validar+'\n');
+        //console.log(response.success);
+    },
+    error: function(xhr, status, error) {
+      
+      
+      data = JSON.parse(xhr.responseText).errors
+      $.each(data, function(key, value){                
+        $('.alert-danger').show();
+        $('.alert-danger').append('<li>'+value+'</li>');
+      });
+
+      Lobibox.alert(
+        'error',  // Available types 'warning', 'info', 'success', 'error'
+        {
+          title: "Error",
+          size: 'normal',
+          icon: false,
+          msg: 'Problema al eliminar persona, por favor contáctese con el administrador del sistema.',
+          closeOnClick: true,
+          sound: false,
+          position: "bottom left"
+        }
+      );
+    }
+  });
+
 }

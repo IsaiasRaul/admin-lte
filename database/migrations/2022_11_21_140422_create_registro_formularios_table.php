@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_municipalidad');
             $table->tinyInteger('activo');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('id_estado')->references('id')->on('estados')->onDelete("cascade")->onUpdate("cascade");
             $table->foreign('id_convocatoria')->references('id')->on('convocatorias')->onDelete("cascade")->onUpdate("cascade");

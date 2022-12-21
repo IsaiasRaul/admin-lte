@@ -25,6 +25,7 @@ return new class extends Migration
             $table->integer('orden');
             $table->tinyInteger('activo');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('id_producto')->references('id')->on('productos')->onDelete("cascade")->onUpdate("cascade");
             $table->foreign('id_tipo_input')->references('id')->on('tipo_inputs')->onDelete("cascade")->onUpdate("cascade");

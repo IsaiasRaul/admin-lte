@@ -18,9 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger('id_formulario');
             $table->string('respuesta',5000)->nullable();
             $table->unsignedBigInteger('id_registro');
-            $table->unsignedBigInteger('id_tipo_respuesta');
+            $table->unsignedBigInteger('id_tipo_respuesta');            
             $table->timestamps();
-
+            $table->softDeletes();
 
             $table->foreign('id_formulario')->references('id')->on('formularios')->onDelete("cascade")->onUpdate("cascade");
             $table->foreign('id_registro')->references('id')->on('registro_formularios')->onDelete("cascade")->onUpdate("cascade");

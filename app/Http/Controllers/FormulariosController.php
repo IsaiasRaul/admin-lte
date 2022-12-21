@@ -124,7 +124,9 @@ class FormulariosController extends Controller
         $opcionesjornadaLaboral         = JornadaLaboral::get();
         $opcionesverificadorCumplimiento = VerificadorCumplimiento::get();
 
-        $detallePersonaDis = Detallepersonasdiscapacidad::where('id_registro', $request->idregistro)->paginate();
+        $detallePersonaDis = Detallepersonasdiscapacidad::where('id_registro', $request->idregistro)
+                                                        ->where('deleted_at','=',NULL)->get();
+        
 
         return view('municipio.form', compact(['forms',
                                                 'etapasFormulario',
@@ -185,7 +187,7 @@ class FormulariosController extends Controller
                                     
                     $camposvalido = array_combine($formName_array, $regla_array);                                           
                                       
-                }                                              
+                }
             }
 
 

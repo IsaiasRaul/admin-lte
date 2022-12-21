@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('configuracion_mensaje',2000);
             $table->string('mensaje',2000);
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('id_regla')->references('id')->on('reglas_formularios')->onDelete("cascade")->onUpdate("cascade");
         });

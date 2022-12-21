@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_formulario');
             $table->string('opciones');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('id_formulario')->references('id')->on('formularios')->onDelete("cascade")->onUpdate("cascade");
         });

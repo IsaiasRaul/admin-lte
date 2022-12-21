@@ -21,9 +21,10 @@
                             <th>Eliminar</th>
                         </tr>
                     </thead>
+                    @csrf
                     <tbody id="DataResult">
                         @foreach ($detallePersonaDis as $detallePersona)                                                                  
-                        <tr>                                                                     
+                        <tr id="{{$detallePersona->id}}">
                             <td>{{$detallePersona->rut}}</td>
                             <td>{{$detallePersona->periodo_contratacion_desde}}</td>
                             @if ( is_null($detallePersona->periodo_contratacion_hasta) )
@@ -32,7 +33,12 @@
                             <td>{{$detallePersona->periodo_contratacion_hasta}}</td>
                             @endif                                                                    
                             <td><i class="fa-solid fa-user-pen"></i></td>
-                            <td><i class="fa-solid fa-trash"></i></td>                                                                    
+                            <td>                                
+                                <a title="Eliminar este colaborador con discapacidad" class="remove" onclick="eliminarColaboradorDiscapacidad({{$detallePersona->id}})" href="#">
+                                    <i id="delete" class="fa-solid fa-trash"></i>
+                                </a>
+                            </td>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Detallepersonasdiscapacidad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class DetallePersonasDiscapacidadController extends Controller
 {
@@ -29,7 +30,7 @@ class DetallePersonasDiscapacidadController extends Controller
         if ($request->ajax()) {
             $messages = [
                 'rut.required' => 'Campo RUN es requerido',
-                'rut.unique' => 'Campo RUN debe ser único',
+                'rut.unique' => 'Este RUN ya se encuentra agregado',
                 'estamento.required' => 'Debe seleccionar un estamento',
                 'calidad_contractual.required' => 'Debe selecionar calidad contractual',
                 'jornanda_laboral.required' => 'Debe seleccionar una jornada laboral'
@@ -37,7 +38,7 @@ class DetallePersonasDiscapacidadController extends Controller
             ];
 
             $camposValidacion = [
-                'rut' => 'required|unique:detallepersonasdiscapacidads',
+                'rut' => ['required', Rule::unique('detallepersonasdiscapacidads')->ignore($request->rut)->whereNull('deleted_at')],
                 'estamento' => 'required',
                 'calidad_contractual' => 'required',
                 'jornanda_laboral' => 'required'
@@ -91,7 +92,8 @@ class DetallePersonasDiscapacidadController extends Controller
     public function show(Request $request)
     {
         
-        $detallePersonaDis = Detallepersonasdiscapacidad::where('id_registro', $request->idregistro)->get();
+        $detallePersonaDis = Detallepersonasdiscapacidad::where('id_registro', $request->idregistro)
+                                                          ->where('deleted_at','=',NULL)->get();
               
 //        return response()->json(['success' => $detallePersonaDis, 'message' => 'success'], 200);
         return response()->json(['data' => $detallePersonaDis]);
@@ -115,9 +117,17 @@ class DetallePersonasDiscapacidadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->id;
+        $idRegistro = $request->idregistro;
+        $fechaHoy = date('Y-m-d H:i:s');
+
+        Detallepersonasdiscapacidad::where('id_registro',$idRegistro )
+        ->where('id', $id)
+        ->update(['deleted_at' => $fechaHoy]);
+
+        return response()->json(['success' => true, 'message' => 'success'], 200);
     }
 
 }
