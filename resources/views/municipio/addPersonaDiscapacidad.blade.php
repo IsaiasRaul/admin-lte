@@ -32,7 +32,11 @@
                             @else
                             <td>{{$detallePersona->periodo_contratacion_hasta}}</td>
                             @endif                                                                    
-                            <td><i class="fa-solid fa-user-pen"></i></td>
+                            <td>
+                                <a title="Editar este colaborador con discapacidad" href="#" data-toggle="modal" data-target="#modalEditar">
+                                <i class="fa-solid fa-user-pen"></i>
+                                </a>                                                                
+                            </td>
                             <td>                                
                                 <a title="Eliminar este colaborador con discapacidad" class="remove" onclick="eliminarColaboradorDiscapacidad({{$detallePersona->id}})" href="#">
                                     <i id="delete" class="fa-solid fa-trash"></i>
@@ -196,7 +200,7 @@
     </div>
 
     <!-- Modal para edicion de datos -->
-    <div class="modal fade" id="modalEdicion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade" id="modalEditar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
