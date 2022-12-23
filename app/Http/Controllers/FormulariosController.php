@@ -166,14 +166,43 @@ class FormulariosController extends Controller
  
     public function store(Request $request)
     {
+        $etapaIdCurr = $request->currStepIndex;
+        $etapaId = null;
+        
+        /** 0:Identificacion del informante 
+         *  1: Seleccion preferente
+         *  2: Medidad de accesivilidad en proceso de seleccion
+         *  3: Mantención Y Contratación De Personas Con Discapacidad
+         *  4: Difusión Informes Período Anterior Reportado
+         *  5: Término Y Envío De Formulario
+         * 
+         * Se homologa a etapa con modulo desde wizar
+        */
+        if ($etapaIdCurr == 0) {
+                $etapaId = 1;
+        } elseif ($etapaIdCurr == 1 ){
+            $etapaId = 2;
+        } elseif ($etapaIdCurr == 2 ){
+            $etapaId = 3;
+        } elseif ($etapaIdCurr == 3 ){ 
+            $etapaId = 4;
+        } elseif ($etapaIdCurr == 4 ){ 
+            $etapaId = 5;
+        } elseif ($etapaIdCurr == 5 ){
+            $etapaId = 6;
+        }
+
+        
 
         if ($request->ajax()) {
-
+            
             /** Obtengo las reglas del formulario desde la BD */
             $erroresCampos = FormularioRespuestas::where('id_registro',$request->idregistro)
                                                  ->with('formularios')
                                                  ->with('reglas_formularios')
                                                  ->get();
+
+            
 
             $formName_array = array();
             $regla_array = array();
@@ -181,15 +210,18 @@ class FormulariosController extends Controller
             $camposvalido = array();
             foreach ($erroresCampos as $key => $value) {                                
                 if (isset($value->reglas_formularios->regla)) {
+                    
+                    if ($etapaId == $value->formularios->id_etapa_producto) {
+                        array_push($formName_array, $value->formularios->name."_".$value->formularios->id);
+                        array_push($regla_array ,$value->reglas_formularios->regla);                    
+                                                                                
+                        $camposvalido = array_combine($formName_array, $regla_array);                    
+                    }
 
-                    array_push($formName_array, $value->formularios->name."_".$value->formularios->id);
-                    array_push($regla_array ,$value->reglas_formularios->regla);                    
-                                    
-                    $camposvalido = array_combine($formName_array, $regla_array);                                           
-                                      
                 }
             }
 
+            
 
             /**Obtengo mensajes de las reglas */
             $campoReglaArray = array();
@@ -211,6 +243,9 @@ class FormulariosController extends Controller
                 }
                 
             }
+
+
+            
           
             /** COMENTADO: Ejemplo de validacion con Laravel Validator */
             /*$messages = [

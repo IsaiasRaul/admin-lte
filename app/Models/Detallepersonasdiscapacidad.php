@@ -25,4 +25,22 @@ class Detallepersonasdiscapacidad extends Model
         'periodo_contratacion_hasta',
     ];
     
+
+    public function estamentos()
+    {
+    	return $this->belongsTo(Estamento::class, 'id_estamento');
+    }
+
+    public function calidad_contractual()
+    {
+    	return $this->belongsTo(Estamento::class, 'id_calidad_contractual');
+    }    
+    public function jornada_laboral()
+    {
+    	return $this->belongsTo(Estamento::class, 'id_jornada_laboral');
+    }
+    public function verificador_cumplimiento()
+    {
+    	return $this->belongsTo(Estamento::class, 'id_verificador_cumplimiento');
+    }
 }

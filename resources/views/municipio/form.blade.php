@@ -49,7 +49,7 @@
                 <section style="width: 100%; height: 100%; overflow-y: scroll;">                    
                         @csrf
                         @foreach ($forms as $formrespuesta)
-                            @if( $etapasForm->id == $formrespuesta->formularios->id_etapa_producto)
+                            @if( $etapasForm->id == $formrespuesta->formularios->id_etapa_producto)                                
                                 <div class="form-group col-md-12">
                                     <!-- Tipo input 11: solo label -->
                                     @if($formrespuesta->formularios->id_tipo_input == 11 )                                    
@@ -278,7 +278,7 @@
                             @endif    
                         @endforeach
                         <input id="idregistro" name="idregistro" type="hidden" value="{{$formrespuesta->id_registro}}">
-                </section>
+                </section>                
                 @endforeach
             </div>
             </form>

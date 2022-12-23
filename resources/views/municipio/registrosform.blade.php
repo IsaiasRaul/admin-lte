@@ -53,7 +53,7 @@
                             @csrf
                             <a href="#" class="dropdown-item">                                
                                 <i class="fa-solid fa-triangle-exclamation"></i>
-                                {{ __('Responder Observación') }}
+                                {{ __('Razones Fundadas') }}
                             </a>
                         </td>                        
                     </tr>

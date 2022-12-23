@@ -91,11 +91,22 @@ class DetallePersonasDiscapacidadController extends Controller
      */
     public function show(Request $request)
     {
-        
-        $detallePersonaDis = Detallepersonasdiscapacidad::where('id_registro', $request->idregistro)
-                                                          ->where('deleted_at','=',NULL)->get();
-              
-//        return response()->json(['success' => $detallePersonaDis, 'message' => 'success'], 200);
+        if (isset($request->id)) {
+            $detallePersonaDis = Detallepersonasdiscapacidad::where('id_registro', $request->idregistro)
+            ->where('id',$request->id)
+            ->where('deleted_at','=',NULL)
+            ->with('estamentos')
+            ->with('calidad_contractual')
+            ->with('jornada_laboral')
+            ->with('verificador_cumplimiento')
+            ->get();
+        } else {
+            $detallePersonaDis = Detallepersonasdiscapacidad::where('id_registro', $request->idregistro)
+            ->where('deleted_at','=',NULL)
+            ->with('estamentos')
+            ->get();        
+        }
+
         return response()->json(['data' => $detallePersonaDis]);
     }
 
@@ -105,9 +116,23 @@ class DetallePersonasDiscapacidadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        $id = $request->id;                        
+        $detallePersonaDis = Detallepersonasdiscapacidad::find($id);
+        $detallePersonaDis->rut = $request->rut;
+        $detallePersonaDis->id_estamento = $request->estamento;
+        $detallePersonaDis->id_calidad_contractual = $request->calidad_contractual;
+        $detallePersonaDis->id_jornada_laboral = $request->jornanda_laboral;
+        $detallePersonaDis->monto_remuneracion_imponible = $request->monto_remuneracion;
+        $detallePersonaDis->id_verificador_cumplimiento = $request->verificador_cumplimiento;
+        $detallePersonaDis->genero = $request->genero;
+        $detallePersonaDis->fecha_ingreso_institucion = $request->fecha_ingreso_institucion;
+        $detallePersonaDis->periodo_contratacion_desde = $request->periodo_contratacion_desde;
+        $detallePersonaDis->periodo_contratacion_hasta = $request->periodo_contratacion_hasta;
+        $detallePersonaDis->save();
+
+        return response()->json(['success' => true, 'message' => 'success'], 200);
     }
 
     /**
@@ -130,4 +155,14 @@ class DetallePersonasDiscapacidadController extends Controller
         return response()->json(['success' => true, 'message' => 'success'], 200);
     }
 
+    public function view_persona(Request $request)
+    {
+        
+        $detallePersonaDis = Detallepersonasdiscapacidad::where('id', $request->id)
+                                                          ->where('id_registro', $request->idregistro)
+                                                          ->where('deleted_at','=',NULL)->get();
+              
+        //dd($detallePersonaDis);
+        return response()->json(['data' => $detallePersonaDis]);
+    }
 }

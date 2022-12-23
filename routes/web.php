@@ -49,5 +49,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/guardar_persona_discapacidad', [DetallePersonasDiscapacidadController::class, 'create'])->name('guardarpersonadiscapacidad');
     Route::post('/obtener_persona_discapacidad', [DetallePersonasDiscapacidadController::class, 'show'])->name('obtenerpersonadiscapacidad');
     Route::post('/delete_persona_discapacidad', [DetallePersonasDiscapacidadController::class, 'update'])->name('deletepersonadiscapacidad');
+    Route::post('/view_persona_discapacidad', [DetallePersonasDiscapacidadController::class, 'view_persona'])->name('viewpersonadiscapacidad');
+    Route::post('/actualizar_persona_discapacidad', [DetallePersonasDiscapacidadController::class, 'edit'])->name('actualizarpersonadiscapacidad');
+    Route::post('/ver_persona_discapacidad', [DetallePersonasDiscapacidadController::class, 'show'])->name('verpersonadiscapacidad');
         
 });

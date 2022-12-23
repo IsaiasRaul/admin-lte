@@ -17,6 +17,6 @@ class FormularioRespuestas extends Model
 
     public function reglas_formularios()
     {
-    	return $this->belongsTo(ReglasFormulario::class, 'id_formulario');
+    	return $this->hasOne(ReglasFormulario::class, 'id_formulario');
     }
 }
