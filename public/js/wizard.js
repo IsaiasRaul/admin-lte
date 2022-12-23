@@ -74,14 +74,15 @@ $(function () {
                   validar.push(res);                
                   var errors = response.responseJSON.errors;
 
+                  $('.messages').show();
                   var errorsHtml = '<div class="alert alert-danger"><ul>';
-
-                  $.each( errors, function( key, value ) {
+                  $.each( errors, function( key, value ) {                      
                       errorsHtml += '<li>'+ value[0] + '</li>';
                   });
                   errorsHtml += '</ul></div>';
 
                   $('.messages').html(errorsHtml);
+                  
                 }
               }            
             });

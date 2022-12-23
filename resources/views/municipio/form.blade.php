@@ -15,6 +15,18 @@
 
     <!-- Main content -->
     <div class="content">
+        <div class="messages"></div>
+
+        @if ($errors->any())
+             <div class="alert alert-danger">
+                 <ul>
+                     @foreach ($errors->all() as $error)
+                         <li>{{ $error }}</li>
+                     @endforeach
+                 </ul>
+             </div>
+         @endif
+         
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
@@ -28,17 +40,7 @@
             <!-- /.row -->
         </div><!-- /.container-fluid -->
 
-        <div class="messages"></div>
 
-       @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
 
         <div>
             <p><a href="{{ route('form') }}" >Inicio </a>-> Formulario</p>

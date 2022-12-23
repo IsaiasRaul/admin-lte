@@ -46,7 +46,7 @@
                 </div>-->
                 <!-- /.col -->
                 <div class="col-4">
-                    <button type="submit" class="btn btn-primary btn-block">{{ __('Login') }}</button>
+                    <button type="submit" class="btn btn-primary btn-block">{{ __('Ingresar') }}</button>
                 </div>
                 <!-- /.col -->
             </div>
@@ -54,7 +54,7 @@
 
         @if (Route::has('password.request'))
             <p class="mb-1">
-                <a href="{{ route('password.request') }}">{{ __('Forgot Your Password?') }}</a>
+                <a href="{{ route('password.request') }}">{{ __('¿Olvidó su contraseña?') }}</a>
             </p>
         @endif
     </div>
