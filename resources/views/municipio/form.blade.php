@@ -48,10 +48,17 @@
             <div id="wizard">
                 @foreach ($etapasFormulario as $etapasForm)
                 <h2>{{ $etapasForm->title }}</h2>
-                <section style="width: 100%; height: 100%; overflow-y: scroll;">                    
+                <section style="width: 100%; height: 100%; overflow-y: scroll;">                                   
                         @csrf
+                        <!-- Excepcion para el envio final del formulario -->                                
+                        @if ($etapasForm->id == 6)
+                        <div>
+                        @include('municipio.finalizar')
+                        </div>
+                        @endif 
+                        <!-- hasta aca tabla envio final del formulario -->
                         @foreach ($forms as $formrespuesta)
-                            @if( $etapasForm->id == $formrespuesta->formularios->id_etapa_producto)                                
+                            @if( $etapasForm->id == $formrespuesta->formularios->id_etapa_producto)  
                                 <div class="form-group col-md-12">
                                     <!-- Tipo input 11: solo label -->
                                     @if($formrespuesta->formularios->id_tipo_input == 11 )                                    
@@ -105,6 +112,15 @@
                                     <!-- Tipo input id 3: Select -->
                                     <!-- desarrolla: Se obtienen opciones desde la tabla FormOptions. -->
                                     @if($formrespuesta->formularios->id_tipo_input == 3 )
+                                        @if($formrespuesta->formularios->id == 19)
+                                            @php
+                                            $funcion="onchange=ocultar_pregunta();";
+                                            @endphp
+                                        @else
+                                            @php
+                                            $funcion="";
+                                            @endphp
+                                        @endif
                                     <div class="form-group"> 
                                         <label for="singleselect">{{ $formrespuesta->formularios->label }}</label>
                                         <select class="form-select appearance-none
@@ -124,14 +140,15 @@
                                                         focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" 
                                                         id="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
                                                         name="{{ $formrespuesta->formularios->name }}_{{ $formrespuesta->formularios->id }}" 
-                                                        aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}">
+                                                        aria-describedby="{{ $formrespuesta->formularios->aria_describedby }}"  {{ $funcion }}
+                                                        >
                                             @if($opcionesForm->isEmpty())
                                             <option value="0">Problemas al cargar opciones, contáctese con el administrador</option> 
                                             @else
                                             @php
                                             $seleccionado = "";
                                             @endphp
-                                            <option value="0">Seleccione</option>  
+                                            <option value="">Seleccione</option>  
                                                 @foreach ($opcionesForm as $option)                                              
                                                     @if ($option->id_formulario == $formrespuesta->formularios->id )  
                                                         @if( !is_null($formrespuesta->respuesta) or !empty($formrespuesta->respuesta) )                                                

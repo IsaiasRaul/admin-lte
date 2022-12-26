@@ -19,11 +19,14 @@ $(function () {
             
             //Carga de tabla para agregar colaboradores con discapacidad
             if(nextStepIndex == 3 ) //Medidas de accesibilidad en procesos de seleccion (paso 4)
-            {              
-              //console.log(nextStepIndex);
-              $("#element").show();
+            {      
+              personas_discapacidad_contrato_vigente=$('#personas_discapacidad_contrato_vigente_19').val();
+              if(personas_discapacidad_contrato_vigente == 'Sí, 1 o más'){
+                $("#element").show();
+              }else{
+                $("#element").hide();
+              }
             }
-
 
             var validar = [];            
             var form = $('#enviar').serialize() + '&currStepIndex=' + currStepIndex;
@@ -82,6 +85,8 @@ $(function () {
                   errorsHtml += '</ul></div>';
 
                   $('.messages').html(errorsHtml);
+
+                  $("html, body").animate({ scrollTop: 0 }, 600);
                   
                 }
               }            
@@ -564,4 +569,13 @@ function visualizarColaboradorDiscapacidad(id)
       );
     }
   });
+}
+
+function ocultar_pregunta(){
+  personas_discapacidad_contrato_vigente=$('#personas_discapacidad_contrato_vigente_19').val();
+  if(personas_discapacidad_contrato_vigente == 'Sí, 1 o más'){
+    $("#element").fadeIn();
+  }else{
+    $("#element").fadeOut();
+  }
 }

@@ -126,7 +126,8 @@ class FormulariosController extends Controller
 
         $detallePersonaDis = Detallepersonasdiscapacidad::where('id_registro', $request->idregistro)
                                                         ->where('deleted_at','=',NULL)->get();
-        
+
+        $validacionfinal = json_decode($this->validacion_final($request->idregistro));
 
         return view('municipio.form', compact(['forms',
                                                 'etapasFormulario',
@@ -137,7 +138,8 @@ class FormulariosController extends Controller
                                                 'opcinoescalidadContractual',
                                                 'opcionesjornadaLaboral',
                                                 'opcionesverificadorCumplimiento',
-                                                'detallePersonaDis']) );
+                                                'detallePersonaDis',
+                                                'validacionfinal']) );
     }
 
     public function obtenerMunicipalidad()
@@ -303,5 +305,116 @@ class FormulariosController extends Controller
                 return response()->json(['success' => true, 'message' => 'success'], 200);
             }
         }
-    } 
+    }
+    
+    public function validacion_final($idRegistro)
+    {
+        $formularioRespuesta = FormularioRespuestas::where('id_registro',$idRegistro)->where('id_tipo_respuesta',1)->get();
+        
+        $validacion = array();
+        /**Validaciones para enviar el formulario etapa final */       
+        $cumple_seleccion_preferente = false;
+        $cumple_porcentaje_dotacion_max = false;
+        $respuesta5=null;
+        $respuesta8=null;
+        $respuesta9=null;        
+        $respuesta10=null;
+        $respuesta15=null;
+
+        foreach($formularioRespuesta as $respuesta){                        
+            /** 
+             *  id_formulario = 6: pregunta 5
+             *  id_formulario = 8: pregunta 7
+             *  id_formulario = 10: pregunta 9 
+             *  id_formulario = 9: pregunta 8
+             *  id_formulario = 11: pregunta 10
+             *  id_formulario = 18: pregunta 15
+            */
+            if($respuesta->id_formulario == 6){
+                
+                $respuesta5 = intVal(trim($respuesta->respuesta));
+            }
+
+            if($respuesta->id_formulario == 8){
+                
+                $respuesta7 = intVal(trim($respuesta->respuesta));
+            }            
+
+            if($respuesta->id_formulario == 9){
+                
+                $respuesta8 = intVal(trim($respuesta->respuesta));
+            }
+
+            if($respuesta->id_formulario == 10){
+                
+                $respuesta9 = intVal(trim($respuesta->respuesta));
+            }
+
+            if($respuesta->id_formulario == 11){                
+                $respuesta10 = trim($respuesta->respuesta);
+            }
+
+            if($respuesta->id_formulario == 18){                
+                $respuesta15 = intVal(trim($respuesta->respuesta));
+            }            
+        }
+
+
+        /** [1] Cumple selección preferente: 
+         * Valor ingresado en pregunta 9 = valor ingresado en pregunta 8 y
+         * valor ingresado en 8 >0 
+         * Valor ingresado en pregunta 9 < valor ingresado en pregunta 8 y 
+         * 10= b ó c */  
+        if( ($respuesta9 === $respuesta8) && ($respuesta8 > 0) || (($respuesta9 < $respuesta8) && ( (strpos($respuesta10, '2') !== false) || (strpos($respuesta10, '3') !==false ))) )
+        {
+            $cumple_seleccion_preferente = 1; //si es true cumple
+        }
+
+        /**
+         * [2] No aplica selección preferente: 
+         * Valor ingresado en 5=0 ó Valor ingreso en 7= 0 ó valor ingreso en 8= 0
+         * valor ingresado en 8 es > 0 y valor ingresado en 9 =< valor ingresado en 8 y valor ingresado en 10 = a
+         */
+        if( $respuesta5 == 0 || $respuesta7 == 0 || $respuesta8 == 0 ){
+            $cumple_seleccion_preferente = 2; //si es 2 NO APLICA
+        }
+
+        if( ($respuesta8 > 0) && ($respuesta9 <= $respuesta8) && (strpos($respuesta10, '1') !== false ) ){
+            $cumple_seleccion_preferente = 2; //si es 2 NO APLICA
+        }
+
+        /**
+         * [3] No cumple selección preferente 
+         * valor ingresado en 9 es > al valor ingresado en 8
+         * valor ingresado en 10 es d y con posterioridad se determina que no entrega razones que justifiquen.
+         */
+        if( ($respuesta9 > $respuesta8) || (strpos($respuesta10, '4') !== false) ){
+            $cumple_seleccion_preferente = 3; //si es 3 NO cumple
+        }
+
+        /**
+         * [4] Falta información: Su respuesta debe ser revisada.  
+         * valor ingresado en 8 es > 0 y valor ingresado en 9 < valor ingresado en 8 y responde d) “Otro” en pregunta 10.
+         * valor ingresado en 10 es d y con posterioridad se determina que no entrega razones que justifiquen.
+         */
+        if( ($respuesta8 > 0) && ($respuesta9 < $respuesta8) && (strpos($respuesta10, '4') !== false ) ){
+            $cumple_seleccion_preferente = 4; //si es 4 Falta información
+        }
+
+        /**1% de la dotación máxima en 2022 */
+        $unoporciento = floor(($respuesta15*1/100));
+        if($respuesta15 < 100){
+            $cumple_porcentaje_dotacion_max = 3;
+        }
+        //$cumple_porcentaje_dotacion_max
+
+
+        array_push($validacion, ['cumple_seleccion_preferente'=>$cumple_seleccion_preferente,
+                                 'unoporciento'=>$unoporciento,
+                                 'cumple_porcentaje_dotacion_max'=>$cumple_porcentaje_dotacion_max
+                                ]
+                    );
+        
+        return json_encode($validacion);
+    }
 }
