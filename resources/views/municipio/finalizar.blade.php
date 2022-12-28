@@ -48,7 +48,7 @@
                                 <td>
                                 {{$item2->unoporciento}}
                                 @if($item2->cumple_porcentaje_dotacion_max === 3)
-                                <p>Institución no obligada a cumplir cuota de contratación de personas con discapacidad o asignatarias de pensión de invalidez</p>
+                                <p align="justify">Institución no obligada a cumplir cuota de contratación de personas con discapacidad o asignatarias de pensión de invalidez</p>
                                 @endif
                                 </td>
                                 @endforeach
@@ -63,21 +63,86 @@
                                 <td>(D) Resultado preliminar cuota de contratación</td>
                                 @foreach($validacionfinal as $item4)
                                     @if( $item4->resultado_pre_couta_contratacion == 1)
-                                    <td>Cumple cuota de contratación</td>
+                                    <td><p align="justify">Cumple cuota de contratación</p></td>
                                     @elseif( $item4->resultado_pre_couta_contratacion == 2)
-                                    <td>No cumple cuota de contratación</td>
+                                    <td><p align="justify">No cumple cuota de contratación</p></td>
                                     @elseif( $item4->resultado_pre_couta_contratacion == 3)
-                                    <td> Cumple no obligada</td>
+                                    <td><p align="justify"> Cumple no obligada</p></td>
                                     @elseif( $item4->resultado_pre_couta_contratacion == 4)
-                                    <td>No obligada</td>
+                                    <td><p align="justify">No obligada</p></td>
                                     @elseif( $item4->resultado_pre_couta_contratacion == 5)
-                                    <td>Falta información</td>
+                                    <td><p align="justify">Falta información</p></td>
                                     @endif
                                 @endforeach
                             </tr>
                             <tr>
                                 <td>(E) Cumplimiento Global Ley 21.015 (preliminar)</td>
-                                <td>RESULTADO</td>
+                                @foreach($validacionfinal as $item5)
+                                    @if( $item5->cumplimiento_global == 1)
+                                    <td>
+                                        <p align="justify">
+                                            Cumple selección preferente y cuota de contratación (Obligada): 
+                                            La Municipalidad declara cumplir con las obligaciones de selección preferente y de mantención y 
+                                            contratación de personas con discapacidad y/o asignatarias de pensión de invalidez en 2022, 
+                                            estando obligada por tener una dotación de 100 o más funcionarios/trabajadores.
+                                        </p>
+                                    </td>    
+                                    @elseif($item5->cumplimiento_global == 2)
+                                    <td>
+                                        <p align="justify">
+                                            Cumple selección preferente y cuota de contratación (No obligadas): 
+                                            La Municipalidad declara cumplir con las obligaciones de selección preferente y de mantención y 
+                                            contratación de personas con discapacidad y/o asignatarias de pensión de invalidez en 2022, 
+                                            no estando obligada por tener una dotación inferior a 100 funcionarios/trabajadores.
+                                        </p>    
+                                    </td>
+                                    @elseif($item5->cumplimiento_global == 3)
+                                    <td>
+                                        <p align="justify">
+                                            Cumple no obligada: Informa y no aplica selección preferente, ni cuota de contratación: La Municipalidad declara no haber 
+                                            aplicado selección preferente y ni cumplir la cuota de contratación de personas con discapacidad y/o 
+                                            asignatarias de pensión de invalidez en 2022, no estando obligada por tener una dotación inferior a 100 funcionarios/trabajadores.
+                                        </p>
+                                    </td>
+                                    @elseif($item5->cumplimiento_global == 4)
+                                    <td>
+                                        <p align="justify">
+                                            En cumplimiento de selección preferente, no cumple cuota de contratación, debe presentar excusas: 
+                                            La Municipalidad declara cumplir con la obligación de selección preferente, pero declara no cumplir la mantención y contratación de personas 
+                                            con discapacidad y/o asignatarias de pensión de invalidez en 2022.
+                                        </p>
+                                        <p align="justify">
+                                            De acuerdo al Reglamento para el sector público, las instituciones que no hayan dado cumplimiento a la cuota de contratación del 1% de 
+                                            personas con discapacidad y/o asignatarias de pensión de invalidez, deberán excusarse por razones fundadas. 
+                                            Para ello, la Alcaldesa o Alcalde, deberá presentar un informe fundado entre el 03 de abril de 2022 y el 28 de abril de 2023. <br>
+                                            A dicho proceso se podrá acceder a través de sistema de reportabilidad ley21015.senadis.cl
+                                        </p>
+                                    </td>
+                                    @elseif($item5->cumplimiento_global == 5)
+                                    <td>
+                                        <p align="justify">
+                                            <b>No Cumple selección preferente, cumple cuota de contratación: </b> 
+                                            La Municipalidad declara cumplir con la obligación de mantención y contratación, 
+                                            pero declara no cumplir la selección preferente de personas con discapacidad y/o
+                                            asignatarias de pensión de invalidez en 2022.
+                                        </p>
+                                    </td>
+                                    @elseif($item5->cumplimiento_global == 6)
+                                    <td>
+                                        <p align="justify">
+                                            La Municipalidad no entrega suficiente información para determinar si se cumplió o no con la 
+                                            selección preferente y/o con la mantención y contratación de personas con 
+                                            discapacidad y/o asignatarias de pensión de invalidez en 2022.
+                                        </p>
+                                        <p align="justify">
+                                            De acuerdo al Reglamento para el sector público, las instituciones que no hayan dado cumplimiento a la 
+                                            cuota de contratación del 1% de personas con discapacidad y/o asignatarias de pensión de invalidez, 
+                                            deberán excusarse por razones fundadas. Para ello, la Alcaldesa o Alcalde,  
+                                            deberá presentar un informe fundado entre el 03 de abril de 2023 y el 28 de abril de 2023.
+                                        </p>
+                                    </td>                                
+                                    @endif
+                                @endforeach
                             </tr>                                                                                                                       
 
                             </tbody>

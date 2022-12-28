@@ -17,129 +17,128 @@ $(function () {
         },     
         onStepChanging: function (event, currStepIndex, nextStepIndex) {
             
-            //Carga de tabla para agregar colaboradores con discapacidad
-            if(nextStepIndex == 3 ) //Medidas de accesibilidad en procesos de seleccion (paso 4)
-            {      
-              personas_discapacidad_contrato_vigente=$('#personas_discapacidad_contrato_vigente_19').val();
-              if(personas_discapacidad_contrato_vigente == 'Sí, 1 o más'){
-                $("#element").show();
-              }else{
-                $("#element").hide();
-              }
+          //Carga de tabla para agregar colaboradores con discapacidad
+          if(nextStepIndex == 3 ) //Medidas de accesibilidad en procesos de seleccion (paso 4)
+          {      
+            personas_discapacidad_contrato_vigente=$('#personas_discapacidad_contrato_vigente_19').val();
+            if(personas_discapacidad_contrato_vigente == 'Sí, 1 o más'){
+              $("#element").show();
+            }else{
+              $("#element").hide();
             }
+          }
 
-            /**Reload para el ultimo módulo */
-            if(nextStepIndex == 5){
-                idregistro=$('#idregistro').val();
-                idconvocatoria=$('#idconvocatoria').val();
-                //$('#finaliza').load("municipio.finalizar");
-
-
-                $.ajax({
-                  url: '/finaliza_formulario',
-                  method: 'POST',
-                  async: false,
-                  data: {
-                        idregistro:idregistro
-                        }, // prefer use serialize method            
-                  beforeSend: function() {
-                    //Mostrar el loading
-                    //$(".loader").show();
-                  },    
-                  success:function(data){
-                                               
-                      $('#finaliza').empty('').append(data);                    
-                      
-                  },
-                  error: function(xhr, status, error) {
-                          
-                    data = JSON.parse(xhr.responseText).errors
-                    $.each(data, function(key, value){                
-                      $('.alert-danger').show();
-                      $('.alert-danger').append('<li>'+value+'</li>');
-                    });
-              
-                    Lobibox.alert(
-                      'error',  // Available types 'warning', 'info', 'success', 'error'
-                      {
-                        title: "Error",
-                        size: 'normal',
-                        icon: false,
-                        msg: 'Problema al cargar, por favor contáctese con el administrador del sistema.',
-                        closeOnClick: true,
-                        sound: false,
-                        position: "bottom left"
-                      }
-                    );
-                  }
-                });
-
+          var validar = [];            
+          var form = $('#enviar').serialize() + '&currStepIndex=' + currStepIndex;
+          
+          $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+          });
 
-            var validar = [];            
-            var form = $('#enviar').serialize() + '&currStepIndex=' + currStepIndex;
-            
-            $.ajaxSetup({
-              headers: {
-                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-              }
-            });
-
-            $.ajax({
-              url: '/guardar_postulacion',
-              method: 'POST',
-              async: false,
-              data: form, // prefer use serialize method            
-              beforeSend: function() {
-                //Mostrar el loading
-                //$(".loader").show();
-              },    
-              success:function(response){
-                  //$(".loader").fadeOut("slow");        
-                  if(response.success === true ){    
-                    res = true;               
-                    validar.push(res);
-                    
-                    $(".messages").fadeOut("slow");
-
-                    Lobibox.notify(
-                      'success',  // Available types 'warning', 'info', 'success', 'error'
-                      {
-                        title: "Guardado",
-                        size: 'normal',
-                        icon: false,
-                        msg: 'Guardado con éxito',
-                        closeOnClick: true,
-                        delay: 3000,
-                        sound: false,
-                        position: "bottom center"
-                      }
-                    );
-                  }                         
-                  //console.log('succes: '+validar+'\n');
-                  //console.log(response.success);
-              },
-              error: function(response) {
-                if( response.status === 422 ) {
-                  res = false;
-                  validar.push(res);                
-                  var errors = response.responseJSON.errors;
-
-                  $('.messages').show();
-                  var errorsHtml = '<div class="alert alert-danger"><ul>';
-                  $.each( errors, function( key, value ) {                      
-                      errorsHtml += '<li>'+ value[0] + '</li>';
-                  });
-                  errorsHtml += '</ul></div>';
-
-                  $('.messages').html(errorsHtml);
-
-                  $("html, body").animate({ scrollTop: 0 }, 600);
+          $.ajax({
+            url: '/guardar_postulacion',
+            method: 'POST',
+            async: false,
+            data: form, // prefer use serialize method            
+            beforeSend: function() {
+              //Mostrar el loading
+              //$(".loader").show();
+            },    
+            success:function(response){
+                //$(".loader").fadeOut("slow");        
+                if(response.success === true ){    
+                  res = true;               
+                  validar.push(res);
                   
+                  $(".messages").fadeOut("slow");
+
+                  Lobibox.notify(
+                    'success',  // Available types 'warning', 'info', 'success', 'error'
+                    {
+                      title: "Guardado",
+                      size: 'normal',
+                      icon: false,
+                      msg: 'Guardado con éxito',
+                      closeOnClick: true,
+                      delay: 3000,
+                      sound: false,
+                      position: "bottom center"
+                    }
+                  );
+                }                         
+                //console.log('succes: '+validar+'\n');
+                //console.log(response.success);
+            },
+            error: function(response) {
+              if( response.status === 422 ) {
+                res = false;
+                validar.push(res);                
+                var errors = response.responseJSON.errors;
+
+                $('.messages').show();
+                var errorsHtml = '<div class="alert alert-danger"><ul>';
+                $.each( errors, function( key, value ) {                      
+                    errorsHtml += '<li>'+ value[0] + '</li>';
+                });
+                errorsHtml += '</ul></div>';
+
+                $('.messages').html(errorsHtml);
+
+                $("html, body").animate({ scrollTop: 0 }, 600);
+                
+              }
+            }            
+          });
+
+          /**Reload para el ultimo módulo */
+          if(nextStepIndex == 5){
+            console.log(nextStepIndex);
+              idregistro=$('#idregistro').val();
+              idconvocatoria=$('#idconvocatoria').val();
+              //$('#finaliza').load("municipio.finalizar");
+
+              $.ajax({
+                url: '/finaliza_formulario',
+                method: 'POST',
+                async: false,
+                data: {
+                      idregistro:idregistro
+                      }, // prefer use serialize method            
+                beforeSend: function() {
+                  //Mostrar el loading
+                  //$(".loader").show();
+                },    
+                success:function(data){                      
+                    $('#finaliza').empty('').append(data);                    
+                    
+                },
+                error: function(xhr, status, error) {
+                        
+                  data = JSON.parse(xhr.responseText).errors
+                  $.each(data, function(key, value){                
+                    $('.alert-danger').show();
+                    $('.alert-danger').append('<li>'+value+'</li>');
+                  });
+            
+                  Lobibox.alert(
+                    'error',  // Available types 'warning', 'info', 'success', 'error'
+                    {
+                      title: "Error",
+                      size: 'normal',
+                      icon: false,
+                      msg: 'Problema al cargar, por favor contáctese con el administrador del sistema.',
+                      closeOnClick: true,
+                      sound: false,
+                      position: "bottom left"
+                    }
+                  );
                 }
-              }            
-            });
-           
+              });
+            }            
+
+
           if (validar == null) {
             validarFinal = true;
           }else{

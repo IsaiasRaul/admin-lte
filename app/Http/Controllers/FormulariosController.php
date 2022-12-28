@@ -506,11 +506,57 @@ class FormulariosController extends Controller
             $resultado_pre_couta_contratacion = 5; //Falta información
         }
 
-        array_push($validacion, ['cumple_seleccion_preferente'=>$cumple_seleccion_preferente,
-                                 'unoporciento'=>$unoporciento,
-                                 'cumple_porcentaje_dotacion_max'=>$cumple_porcentaje_dotacion_max,
-                                 'cuota_contratacion'=>$cuota_contratacion,
-                                 'resultado_pre_couta_contratacion' => $resultado_pre_couta_contratacion
+        /**
+         * (E) Cumplimiento Global Ley 21.015 (preliminar)
+         * [E1] Cumple selección preferente y cuota de contratación (Obligada) 
+         * En (A), categoría [1] ó categoría [2] y en (D) categoría [1] 
+         * Texto a mostrar: “Cumple selección preferente y cuota de contratación (Obligada): La Municipalidad declara cumplir con las obligaciones de 
+         * selección preferente y de mantención y contratación de personas con discapacidad y/o asignatarias de pensión de invalidez en 2022, 
+         * estando obligada por tener una dotación de 100 o más funcionarios/trabajadores”
+         * 
+         * [E2] Cumple selección preferente y cuota de contratación (No obligadas)
+         * En (A), categoría [1] ó categoría [2] y en (D) categoría [3] 
+         * 
+         * [E3] Cumple no obligada: Informa y no aplica selección preferente ni cuota de contratación 
+         * En (A), categoría [1] ó categoría [2] y en (D) categoría [4] 
+         * 
+         * [E4] Cumple parcial: En cumplimiento de selección preferente, no cumple cuota de contratación, debe presentar excusas
+         * En (A), categoría [1] ó categoría [2] y en (D) categoría [2] 
+         * 
+         * [E5] No Cumple selección preferente, cumple cuota de contratación:
+         * en (A) obtiene categoría [3]; y en (D) obtiene categoría [1]
+         */
+        $cumplimiento_global = false;
+        if( ($cumple_seleccion_preferente == 1 || $cumple_seleccion_preferente ==2) && ($resultado_pre_couta_contratacion == 1)){
+            $cumplimiento_global = 1; // [E1] Cumple selección preferente y cuota de contratación (Obligada) 
+        }
+
+        if(($cumple_seleccion_preferente == 1 || $cumple_seleccion_preferente ==2) && ($resultado_pre_couta_contratacion == 3)){
+            $cumplimiento_global = 2; // [E2] Cumple selección preferente y cuota de contratación (No obligadas)
+        }
+
+        if(($cumple_seleccion_preferente == 1 || $cumple_seleccion_preferente ==2) && ($resultado_pre_couta_contratacion == 4)){
+            $cumplimiento_global = 3; // [E3] Cumple no obligada: Informa y no aplica selección preferente ni cuota de contratación 
+        }
+
+        if(($cumple_seleccion_preferente == 1 || $cumple_seleccion_preferente ==2) && ($resultado_pre_couta_contratacion == 2)){
+            $cumplimiento_global = 4; // [E4] Cumple parcial: En cumplimiento de selección preferente, no cumple cuota de contratación, debe presentar excusas
+        }
+
+        if(($cumple_seleccion_preferente == 3) && ($resultado_pre_couta_contratacion == 1)){
+            $cumplimiento_global = 5; // [E5] No Cumple selección preferente, cumple cuota de contratación
+        }
+
+        if(($cumple_seleccion_preferente == 4) || ($resultado_pre_couta_contratacion == 5)){
+            $cumplimiento_global = 6; // [E6] Falta información para determinar cumplimiento de ambas obligaciones
+        }
+
+        array_push($validacion, ['cumple_seleccion_preferente'=>$cumple_seleccion_preferente, //A
+                                 'unoporciento'=>$unoporciento, //B
+                                 'cumple_porcentaje_dotacion_max'=>$cumple_porcentaje_dotacion_max, //B
+                                 'cuota_contratacion'=>$cuota_contratacion, //C
+                                 'resultado_pre_couta_contratacion' => $resultado_pre_couta_contratacion, //D
+                                 'cumplimiento_global' => $cumplimiento_global //E
                                 ]
                     );
         
