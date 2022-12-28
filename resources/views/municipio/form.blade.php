@@ -52,8 +52,8 @@
                         @csrf
                         <!-- Excepcion para el envio final del formulario -->                                
                         @if ($etapasForm->id == 6)
-                        <div>
-                        @include('municipio.finalizar')
+                        <div id="finalizaDiv">
+                            @include('municipio.finalizar')
                         </div>
                         @endif 
                         <!-- hasta aca tabla envio final del formulario -->
@@ -296,8 +296,12 @@
                                 </div>
                             @endif    
                         @endforeach
-                        <input id="idregistro" name="idregistro" type="hidden" value="{{$formrespuesta->id_registro}}">
+                        <input id="idregistro" name="idregistro" type="hidden" value="{{$formrespuesta->id_registro}}">                                             
                 </section>                
+                @endforeach
+
+                @foreach ($convocatoriaData as $convocatoria) 
+                <input id="idconvocatoria" name="idconvocatoria" type="hidden" value="{{$convocatoria->id}}">   
                 @endforeach
             </div>
             </form>

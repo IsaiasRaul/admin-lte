@@ -28,6 +28,54 @@ $(function () {
               }
             }
 
+            /**Reload para el ultimo módulo */
+            if(nextStepIndex == 5){
+                idregistro=$('#idregistro').val();
+                idconvocatoria=$('#idconvocatoria').val();
+                //$('#finaliza').load("municipio.finalizar");
+
+
+                $.ajax({
+                  url: '/finaliza_formulario',
+                  method: 'POST',
+                  async: false,
+                  data: {
+                        idregistro:idregistro
+                        }, // prefer use serialize method            
+                  beforeSend: function() {
+                    //Mostrar el loading
+                    //$(".loader").show();
+                  },    
+                  success:function(data){
+                                               
+                      $('#finaliza').empty('').append(data);                    
+                      
+                  },
+                  error: function(xhr, status, error) {
+                          
+                    data = JSON.parse(xhr.responseText).errors
+                    $.each(data, function(key, value){                
+                      $('.alert-danger').show();
+                      $('.alert-danger').append('<li>'+value+'</li>');
+                    });
+              
+                    Lobibox.alert(
+                      'error',  // Available types 'warning', 'info', 'success', 'error'
+                      {
+                        title: "Error",
+                        size: 'normal',
+                        icon: false,
+                        msg: 'Problema al cargar, por favor contáctese con el administrador del sistema.',
+                        closeOnClick: true,
+                        sound: false,
+                        position: "bottom left"
+                      }
+                    );
+                  }
+                });
+
+            }
+
             var validar = [];            
             var form = $('#enviar').serialize() + '&currStepIndex=' + currStepIndex;
             

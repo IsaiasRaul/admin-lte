@@ -55,11 +55,25 @@
                             </tr>
                             <tr>
                                 <td>(C) Cuota de contratación de personas con discapacidad</td>
-                                <td>RESULTADO</td>
+                                @foreach ($validacionfinal as $item3)
+                                <td>{{$item3->cuota_contratacion}}</td>
+                                @endforeach
                             </tr>
                             <tr>
                                 <td>(D) Resultado preliminar cuota de contratación</td>
-                                <td>RESULTADO</td>
+                                @foreach($validacionfinal as $item4)
+                                    @if( $item4->resultado_pre_couta_contratacion == 1)
+                                    <td>Cumple cuota de contratación</td>
+                                    @elseif( $item4->resultado_pre_couta_contratacion == 2)
+                                    <td>No cumple cuota de contratación</td>
+                                    @elseif( $item4->resultado_pre_couta_contratacion == 3)
+                                    <td> Cumple no obligada</td>
+                                    @elseif( $item4->resultado_pre_couta_contratacion == 4)
+                                    <td>No obligada</td>
+                                    @elseif( $item4->resultado_pre_couta_contratacion == 5)
+                                    <td>Falta información</td>
+                                    @endif
+                                @endforeach
                             </tr>
                             <tr>
                                 <td>(E) Cumplimiento Global Ley 21.015 (preliminar)</td>

@@ -21,6 +21,7 @@ use App\Models\VerificadorCumplimiento;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
+
 class FormulariosController extends Controller
 {
     /**
@@ -315,6 +316,7 @@ class FormulariosController extends Controller
         /**Validaciones para enviar el formulario etapa final */       
         $cumple_seleccion_preferente = false;
         $cumple_porcentaje_dotacion_max = false;
+        $cuota_contratacion = false;
         $respuesta5=null;
         $respuesta8=null;
         $respuesta9=null;        
@@ -401,20 +403,125 @@ class FormulariosController extends Controller
             $cumple_seleccion_preferente = 4; //si es 4 Falta información
         }
 
-        /**1% de la dotación máxima en 2022 */
+        /**
+         * (B) 1% de la dotación máxima en 2022 
+         * Mostrar el resultado del cálculo automático del 1% de la dotación máxima informada en pgta. 15 
+         * En caso de que el cálculo resulte en número con decimales, aproximar al entero inferior 
+         * Si el dato registrado en pregunta 15 es inferior a 100, mostrar mensaje “Institución no obligada a cumplir cuota de contratación de personas con discapacidad o asignatarias de pensión de invalidez”
+         * */
         $unoporciento = floor(($respuesta15*1/100));
+        
         if($respuesta15 < 100){
             $cumple_porcentaje_dotacion_max = 3;
         }
-        //$cumple_porcentaje_dotacion_max
 
+        /** (C) Cuota de contratación de personas con discapacidad 
+         * Calcular cuántas personas estuvieron contratadas en último día de cada mes del año calendario. Obteniendo 12 valores
+         * promediar los valores de los 12 meses. 
+         * dividir el promedio obtenido por la cifra expresada en la dotación máxima (Pgta 15). 
+         * Aproximar resultado al entero inferior 
+         * Este dato se calcula para todas las Municipalidades, independiente de cuànto fue su dotación máxima (Pgta 15)
+         * 
+        */
+        $detallePersonaDis = Detallepersonasdiscapacidad::where('id_registro', $idRegistro)
+                                                        ->where('deleted_at','=',NULL)->get();
+        
+        $personasDiscapacitada = [];
+        $meses = array();
+        $bandera = null;
+        $v = 0;    
+        foreach ($detallePersonaDis as $key => $detallePersona) {
+            //dd($detallePersona);
+            $fechaInicio=strtotime($detallePersona->periodo_contratacion_desde);
+            $fechaFin=strtotime($detallePersona->periodo_contratacion_hasta);
+ 
+            for($i=$fechaInicio; $i<=$fechaFin; $i+=86400){
+                $periodo_inicio = date("Y-m-d", $i);
+                $periodo_fin = date("Y-m-d", $i);
+                $fecha_fin_mes = date("Y-m-t", $i);
+                $mes = date("m", $i);
+                
+                
+                //echo $periodo_inicio." ".$periodo_fin . " " . $fecha_fin_mes. "<- ".$detallePersona->rut." <br>";                
+                if ($periodo_fin == $fecha_fin_mes) {
+                    array_push($meses, ['rut'=>$detallePersona->rut, 'mes' => $mes]);                    
+                }
+            }                             
+            
+        }
+
+        $contar_personas = 0;
+        $suma_mes_personas = 0;
+        foreach($meses as $mes_rut){            
+            if ($bandera === $mes_rut['rut']) {
+                $v = 1;  
+            }
+            
+            /*echo '<pre>';
+            echo  $bandera." ".$mes_rut['rut']." ".$mes_rut['mes']." ".$v." <br>";
+            echo '</pre>'; */
+
+            for ($i = 1; $i <= 12; $i++) {
+                if ($mes_rut['mes'] == $i) {
+                    //echo " MES->".$i." / MES PERSONA->".$mes_rut['mes']." <br>";
+                    /** Contar personas */            
+                    $contar_personas = ($contar_personas + 1);                    
+                }
+                
+            }
+
+            $v = 0;
+            $bandera = $mes_rut['rut'];
+        }
+                       
+        $cuota_contratacion = floor(($contar_personas/12));
+
+        /**
+         * (D) Resultado preliminar cuota de contratación
+         * [1] Cumple cuota de contratación: Si valor (B) es = ó > que (A); y Pgta 15 es =ó> 100 
+         * [2] No cumple cuota de contratación: Si valor (B) es < que (A); y Pgta 15 es =ó> 100:  
+         * [3] Cumple no obligada: Si valor (B) es = ó > que (A); y Pgta 15 es < 100  
+         * [4] No obligada: Si valor (B) es < que (A); y Pgta 15 es < 100:  
+         * [5] Falta información: esta categoría puede ser marcada en forma manual por administrador, cuando se detecten inconsistencias en valores entregados.
+         */
+
+        $resultado_pre_couta_contratacion = false;
+        if( $cumple_seleccion_preferente == 1  && $respuesta15 >= 100 ){
+            $resultado_pre_couta_contratacion = 1; //cumple
+        }
+
+        if( $cumple_seleccion_preferente !== 1  && $respuesta15 >= 100 ){
+            $resultado_pre_couta_contratacion = 2; //NO cumple
+        }
+        
+        if( $unoporciento > 0 && $cumple_seleccion_preferente == 1 && $respuesta15 < 100 ){
+            $resultado_pre_couta_contratacion = 3; //Cumple no obligada
+        }
+
+        if( ($cumple_seleccion_preferente == 1 || $cumple_seleccion_preferente == 2 || $cumple_seleccion_preferente == 3 || $cumple_seleccion_preferente == 4) && $respuesta15 < 100 ){
+            $resultado_pre_couta_contratacion = 4; //No obligada
+        }
+
+        if( $unoporciento > 0 && $cumple_seleccion_preferente == 4 && $respuesta15 > 100 ){
+            $resultado_pre_couta_contratacion = 5; //Falta información
+        }
 
         array_push($validacion, ['cumple_seleccion_preferente'=>$cumple_seleccion_preferente,
                                  'unoporciento'=>$unoporciento,
-                                 'cumple_porcentaje_dotacion_max'=>$cumple_porcentaje_dotacion_max
+                                 'cumple_porcentaje_dotacion_max'=>$cumple_porcentaje_dotacion_max,
+                                 'cuota_contratacion'=>$cuota_contratacion,
+                                 'resultado_pre_couta_contratacion' => $resultado_pre_couta_contratacion
                                 ]
                     );
         
         return json_encode($validacion);
+    }
+
+    public function formulario_finaliza(Request $request)
+    {
+        $validacionfinal = json_decode($this->validacion_final($request->idregistro));
+        
+        return view('municipio.finalizar',compact('validacionfinal'));
+        
     }
 }

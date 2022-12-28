@@ -43,7 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::get('form', [FormulariosController::class, 'index'])->name('form');
     Route::get('formRespuesta/{idregistro}/{idconvocatoria}', [FormulariosController::class, 'formulario_respuesta'])->name('form.respuesta');
     Route::post('/guardar_postulacion', [FormulariosController::class, 'store'])->name('guardarPostulacion');
-
+    
     Route::get('municipalidades', [MunicipalidadesController::class, 'index'])->name('muni.municipalidades');
 
     Route::post('/guardar_persona_discapacidad', [DetallePersonasDiscapacidadController::class, 'create'])->name('guardarpersonadiscapacidad');
@@ -53,4 +53,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/actualizar_persona_discapacidad', [DetallePersonasDiscapacidadController::class, 'edit'])->name('actualizarpersonadiscapacidad');
     Route::post('/ver_persona_discapacidad', [DetallePersonasDiscapacidadController::class, 'show'])->name('verpersonadiscapacidad');
         
+    Route::post('/finaliza_formulario', [FormulariosController::class, 'formulario_finaliza'])->name('municipio.finaliza');
+    
 });
