@@ -94,7 +94,7 @@ $(function () {
 
           /**Reload para el ultimo módulo */
           if(nextStepIndex == 5){
-            console.log(nextStepIndex);
+            
               idregistro=$('#idregistro').val();
               idconvocatoria=$('#idconvocatoria').val();
               //$('#finaliza').load("municipio.finalizar");
@@ -150,9 +150,65 @@ $(function () {
         },
         onStepChanged: function (event, currentIndex, newIndex) {
           //$('#wizard').steps("setStep", 3);
-        },onFinished: function () {
-          ///more code
-      }
+        },
+        onFinishing:function (event, currentIndex) {
+          console.log("finalizando"); 
+          return true;           
+        },
+        onFinished: function () {
+          
+          idregistro=$('#idregistro').val();
+          idconvocatoria=$('#idconvocatoria').val();
+
+          // 1. Save the instance in variable when showing messagebox
+          var lobibox = Lobibox.confirm({
+            msg         : "¿Está seguro de enviar su reporte?",
+            iconClass: true,
+            callback: function ($this, type, ev) {                
+              if(type === 'yes'){
+                resconfirm = true;
+                //ajax para actualizar el estado y redireccionar al inicio
+                $.ajax({
+                  url: '/actualiza_estado',
+                  method: 'POST',
+                  async: false,
+                  data: {
+                        idregistro:idregistro,
+                        idconvocatoria:idconvocatoria
+                        }, // prefer use serialize method            
+                  beforeSend: function() {
+                    //Mostrar el loading
+                    //$(".loader").show();
+                  },    
+                  success:function(data){                      
+                    window.location.href = "/form?envio=xhers";
+                  },
+                  error: function(xhr, status, error) {
+                    data = JSON.parse(xhr.responseText).errors
+                    $.each(data, function(key, value){                
+                      $('.alert-danger').show();
+                      $('.alert-danger').append('<li>'+value+'</li>');
+                    });
+              
+                    Lobibox.alert(
+                      'error',  // Available types 'warning', 'info', 'success', 'error'
+                      {
+                        title: "Error",
+                        size: 'normal',
+                        icon: false,
+                        msg: 'Problema al enviar el formulario, por favor contáctese con el administrador del sistema.',
+                        closeOnClick: true,
+                        sound: false,
+                        position: "bottom left"
+                      }
+                    );
+                  }
+                });                    
+              }
+            }
+          });
+                              
+       }
     });
 
     

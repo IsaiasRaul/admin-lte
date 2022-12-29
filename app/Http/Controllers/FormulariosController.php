@@ -31,6 +31,13 @@ class FormulariosController extends Controller
      */
     public function index()
     {
+        $option_envio_final = false;
+        if(isset($_GET['envio'])){
+            if($_GET['envio'] == 'xhers'){
+                $option_envio_final = true;
+            }
+        }
+
         $idmunicipalidad = $this->obtenerMunicipalidad();        
         $id_estado = 1; //Creado
 
@@ -89,6 +96,9 @@ class FormulariosController extends Controller
             }        
         }
        
+        $obtener_estado_registro = RegistroFormularios::find($idRegistro);
+        $estado_actual = $obtener_estado_registro->id_estado;
+
         //Obtenemos los datos para enviarlos a la vista
         $municialidad = Municipalidades::where('id',$idmunicipalidad)->get();
         $registrosForm = RegistroFormularios::where('id_municipalidad',$idmunicipalidad)
@@ -98,7 +108,7 @@ class FormulariosController extends Controller
                                            ->with('estados')
                                            ->paginate();
         
-        return view('municipio.registrosform', ['registrosForm' => $registrosForm, 'munidata'=>$municialidad] );
+        return view('municipio.registrosform', ['registrosForm' => $registrosForm, 'munidata'=>$municialidad, 'option_envio_final' => $option_envio_final,'estado_actual'=>$estado_actual] );
     }
 
     public function formulario_respuesta(Request $request)
@@ -568,6 +578,41 @@ class FormulariosController extends Controller
         $validacionfinal = json_decode($this->validacion_final($request->idregistro));
         
         return view('municipio.finalizar',compact('validacionfinal'));
+        
+    }
+
+    public function actualiza_estado(Request $request)
+    {
+        //dd($request);
+        $cambio_estado = $this->log_estados($request->idregistro,5);                
+
+        if($cambio_estado !== false){
+            return response()->json(['success' => true, 'message' => 'success'], 200);
+        }else{
+            return response()->json(['success' => false, 'errors' => 'ERROR'], 422);
+        }
+        
+    }
+
+    public function log_estados($idRegistro,$idestado)
+    {
+        $obtener_estado_registro = RegistroFormularios::find($idRegistro);
+        $estado_actual = $obtener_estado_registro->id_estado;
+
+        RegistroFormularios::where('id', $idRegistro)->update(['id_estado' => $idestado]);
+
+        $registroForm = RegistroFormularios::find($idRegistro);
+        $registroForm->id_estado = $idestado;         
+        $registroForm->save();        
+        
+        $estado_modificado = $registroForm->id_estado;        
+        // save retorna un boolean, podrían usarlo así:
+        if( $estado_actual !==  $estado_modificado){
+            return true;
+        }else{
+            return false;
+        }
+
         
     }
 }
