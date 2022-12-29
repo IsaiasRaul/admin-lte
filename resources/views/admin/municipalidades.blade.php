@@ -57,6 +57,6 @@
 
 @endsection
 
-@section('js')
+@section('script')
     <script> console.log('Hi!'); </script> 
 @stop

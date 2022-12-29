@@ -47,6 +47,15 @@
                         </a>
                     </li>
 
+                    <!-- Revision Reporte ley 21015 -->
+                    <li class="nav-item">
+                        <a href="{{ route('admin.revision') }}" class="nav-link">
+                            <i class="nav-icon fa fa-university"></i>
+                            <p>
+                                {{ __('Revisión Reporte Municipalidades') }}
+                            </p>
+                        </a>
+                    </li>                    
                 </ul>
                 
             </li>                                          

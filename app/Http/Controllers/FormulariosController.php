@@ -611,8 +611,60 @@ class FormulariosController extends Controller
             return true;
         }else{
             return false;
-        }
+        }        
+    }
 
+    public function revision()
+    {
+        $registrosForm = RegistroFormularios::where('activo',1)
+        ->with('municipalidad')
+        ->with('convocatorias')
+        ->with('estados')
+        ->paginate();
+
+        return view('admin.revision',compact('registrosForm'));
+    }
+
+    public function formrevision(Request $request)
+    {
+            /**Obtener id municipalidad del usuario ROL */
+            $idmunicipalidad = $this->obtenerMunicipalidad();
+            $munidata = Municipalidades::where('id',$idmunicipalidad)->get();
+            $convocatoriaData = Convocatorias::where('id',$request->idconvocatoria)->get();
+            $etapasFormulario = Etapaproductos::where('id_producto', env('ID_PROGRAMA') )
+                                              ->orderBy('orden')
+                                              ->get();
+    
+            $forms = FormularioRespuestas::where('id_registro',$request->idregistro)
+                                        ->with('formularios')
+                                        ->get();
+    
+            //opciones asociado al formulario
+            $opcionesForm = FormularioOption::with('formulariosOption')->get();
+    
+            //opciones para el formulario contratacion de personas
+            
+            $opcionesestamentos             = Estamento::get();
+            $opcinoescalidadContractual     = CalidadContractual::get();
+            $opcionesjornadaLaboral         = JornadaLaboral::get();
+            $opcionesverificadorCumplimiento = VerificadorCumplimiento::get();
+    
+            $detallePersonaDis = Detallepersonasdiscapacidad::where('id_registro', $request->idregistro)
+                                                            ->where('deleted_at','=',NULL)->get();
+    
+            $validacionfinal = json_decode($this->validacion_final($request->idregistro));
+    
+            return view('admin.formrevision', compact(['forms',
+                                                    'etapasFormulario',
+                                                    'munidata',
+                                                    'convocatoriaData',
+                                                    'opcionesForm',
+                                                    'opcionesestamentos',
+                                                    'opcinoescalidadContractual',
+                                                    'opcionesjornadaLaboral',
+                                                    'opcionesverificadorCumplimiento',
+                                                    'detallePersonaDis',
+                                                    'validacionfinal']) );
         
     }
 }

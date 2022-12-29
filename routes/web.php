@@ -56,5 +56,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/finaliza_formulario', [FormulariosController::class, 'formulario_finaliza'])->name('municipio.finaliza');
     
     Route::post('/actualiza_estado', [FormulariosController::class, 'actualiza_estado'])->name('actualizaestado');
+
+    /**admin */    
+    Route::get('revision', [FormulariosController::class, 'revision'])->name('admin.revision');
+    Route::get('formrevision/{idregistro}/{idconvocatoria}', [FormulariosController::class, 'formrevision'])->name('admin.formrevision');
     
 });

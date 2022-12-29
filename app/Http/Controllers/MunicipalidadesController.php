@@ -11,6 +11,6 @@ class MunicipalidadesController extends Controller
     {
         $munis = Municipalidades::paginate();
 
-        return view('municipio.municipalidades', compact('munis'));
+        return view('admin.municipalidades', compact('munis'));
     }
 }
